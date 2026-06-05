@@ -507,7 +507,14 @@
               <div class="det-note">Material profesional incluido. Trae agua y ropa cómoda. Apto para todos los niveles.</div>
             </div>
             <div class="det-cta scr-pad">
-              <button class="bookbtn">Reservar plaza</button>
+              <div class="bookbtn-wrap">
+                <button class="bookbtn">Reservar plaza</button>
+                <div class="book-confirm">
+                  <svg class="ico" viewBox="0 0 18 18" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M4 9.5l3.5 3.5 6.5-7"/></svg>
+                  Plaza reservada
+                </div>
+                <span class="tap-dot"></span>
+              </div>
               <div class="cta-sub">Cancelación gratuita hasta 2 h antes</div>
             </div>
           </div></div>
@@ -768,7 +775,32 @@
   .det-chips span{ font-size:12px; font-weight:600; padding:7px 12px; border-radius:999px; background:var(--ink-2); border:1px solid var(--line-d); color:var(--wht-70); }
   .det-note{ font-size:12.5px; color:var(--wht-50); line-height:1.42; margin-top:16px; }
   .det-cta{ padding-bottom:26px; }
-  .bookbtn{ width:100%; border:0; background:var(--accent); color:#fff; font-family:var(--body); font-weight:700; font-size:16.5px; padding:16px; border-radius:16px; cursor:pointer; letter-spacing:.01em; }
+  .bookbtn-wrap{ position:relative; }
+  .bookbtn{ width:100%; border:0; background:var(--accent); color:#fff; font-family:var(--body); font-weight:700; font-size:16.5px; padding:16px; border-radius:16px; cursor:pointer; letter-spacing:.01em;
+    transition:transform .1s cubic-bezier(.3,.7,.4,1), background .22s ease, box-shadow .22s ease;
+    will-change:transform; }
+  .bookbtn.pressing{ transform:scale(.93); background:color-mix(in srgb,var(--accent) 78%,#000); box-shadow:0 2px 8px rgba(0,0,0,.35); }
+  .bookbtn.confirmed{ background:#22c55e; box-shadow:0 4px 18px rgba(34,197,94,.38); }
+
+  /* Success overlay */
+  .book-confirm{ position:absolute; inset:0; border-radius:16px; background:#22c55e;
+    display:flex; align-items:center; justify-content:center; gap:8px;
+    color:#fff; font-family:var(--body); font-weight:700; font-size:16px;
+    opacity:0; transform:scale(.94) translateY(4px);
+    transition:opacity .22s cubic-bezier(.2,.8,.2,1), transform .22s cubic-bezier(.2,.8,.2,1);
+    pointer-events:none; }
+  .book-confirm.visible{ opacity:1; transform:scale(1) translateY(0); }
+  .book-confirm .ico{ width:18px; height:18px; }
+
+  /* Tap ripple dot */
+  .tap-dot{ position:absolute; width:38px; height:38px; border-radius:50%;
+    background:rgba(255,255,255,.3); pointer-events:none;
+    top:50%; left:50%; transform:translate(-50%,-50%) scale(0); opacity:0; }
+  .tap-dot.fire{ animation:tap-ripple .55s cubic-bezier(.2,.6,.3,1) forwards; }
+  @keyframes tap-ripple{
+    0%  { transform:translate(-50%,-50%) scale(0); opacity:.55; }
+    100%{ transform:translate(-50%,-50%) scale(2.8); opacity:0; }
+  }
   .cta-sub{ text-align:center; font-size:11px; color:var(--wht-50); margin-top:11px; }
 
   /* ============================================================
@@ -827,9 +859,7 @@
         phone-in-b 0.68s cubic-bezier(.15,.8,.2,1)  0.22s both,
         float-b    5.8s ease-in-out                 1.15s infinite;
     }
-    section[data-deck-active] .bookbtn {
-      animation: bookbtn-breathe 3.6s ease-in-out 1.8s infinite;
-    }
+    /* bookbtn interaction is driven by JS (booking-sim script) */
     section[data-deck-active] .cls.sel {
       animation: sel-glow 3s ease-in-out 1.4s infinite;
     }
@@ -2812,6 +2842,70 @@
   }
 })();
 
+</script>
+
+<script>
+/* ── Booking simulation (slide · App de reservas) ─────────────────────── */
+(function(){
+  var slide  = document.querySelector('[data-screen-label="App de reservas"]');
+  if(!slide) return;
+
+  var btn     = slide.querySelector('.bookbtn');
+  var confirm = slide.querySelector('.book-confirm');
+  var dot     = slide.querySelector('.tap-dot');
+  var timer   = null;
+
+  function reset(){
+    btn.classList.remove('pressing','confirmed');
+    confirm.classList.remove('visible');
+    dot.classList.remove('fire');
+  }
+
+  function runSequence(){
+    if(!slide.hasAttribute('data-deck-active')){ reset(); return; }
+
+    /* 1 — ripple appears on button */
+    dot.classList.remove('fire');
+    void dot.offsetWidth; /* force reflow so re-adding fires animation fresh */
+    dot.classList.add('fire');
+
+    /* 2 — button depresses (80ms) */
+    setTimeout(function(){ btn.classList.add('pressing'); }, 80);
+
+    /* 3 — spring release + success (240ms) */
+    setTimeout(function(){
+      btn.classList.remove('pressing');
+      btn.classList.add('confirmed');
+      confirm.classList.add('visible');
+    }, 240);
+
+    /* 4 — hide confirmation overlay (2.4s later) */
+    setTimeout(function(){ confirm.classList.remove('visible'); }, 2600);
+
+    /* 5 — button colour resets (after overlay gone) */
+    setTimeout(function(){ btn.classList.remove('confirmed'); }, 3000);
+
+    /* 6 — loop every 7s */
+    timer = setTimeout(runSequence, 7000);
+  }
+
+  /* Watch for the slide becoming active / inactive */
+  var obs = new MutationObserver(function(){
+    if(slide.hasAttribute('data-deck-active')){
+      clearTimeout(timer);
+      timer = setTimeout(runSequence, 2200); /* first tap 2.2s after slide opens */
+    } else {
+      clearTimeout(timer);
+      reset();
+    }
+  });
+  obs.observe(slide, { attributes:true, attributeFilter:['data-deck-active'] });
+
+  /* Handle case where slide is already active on page load */
+  if(slide.hasAttribute('data-deck-active')){
+    timer = setTimeout(runSequence, 2200);
+  }
+})();
 </script>
 </body>
 </html>
