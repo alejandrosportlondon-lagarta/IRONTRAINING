@@ -549,11 +549,9 @@
 
 </deck-stage>
 
-<button id="rail-toggle" title="Mostrar/ocultar panel de diapositivas" aria-label="Mostrar/ocultar panel de diapositivas">
-  <svg id="rail-toggle-icon" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round">
-    <rect x="1" y="1" width="14" height="14" rx="2"/>
-    <line x1="5" y1="1" x2="5" y2="15"/>
-    <path class="arrow" d="M8 6l-2.5 2 2.5 2"/>
+<button id="rail-toggle" aria-label="Ocultar panel">
+  <svg viewBox="0 0 10 16" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+    <polyline points="7,3 2,8 7,13"/>
   </svg>
 </button>
 
@@ -561,43 +559,65 @@
   #rail-toggle {
     position: fixed;
     top: 50%;
-    left: 0;
-    transform: translateY(-50%);
+    /* sits right at the rail's right edge — default rail is 188px */
+    left: 188px;
+    transform: translate(-50%, -50%);
     z-index: 2147483645;
     appearance: none; border: none;
-    width: 22px; height: 48px;
-    border-radius: 0 8px 8px 0;
-    background: rgba(30,30,32,.72);
-    color: rgba(255,255,255,.75);
+    width: 20px; height: 44px;
+    border-radius: 6px;
+    background: #1e1e20;
+    color: rgba(255,255,255,.65);
     cursor: pointer;
     display: flex; align-items: center; justify-content: center;
     padding: 0;
-    backdrop-filter: blur(8px);
-    -webkit-backdrop-filter: blur(8px);
-    transition: width .15s ease, background .15s, color .15s, left .2s cubic-bezier(.3,.7,.4,1);
+    box-shadow: 0 2px 10px rgba(0,0,0,.5), inset 0 0 0 .5px rgba(255,255,255,.1);
+    transition: background .15s, color .15s, left .2s cubic-bezier(.3,.7,.4,1), transform .15s;
   }
   #rail-toggle:hover {
-    width: 28px;
-    background: rgba(30,30,32,.92);
+    background: #2c2c30;
     color: #fff;
+    transform: translate(-50%, -50%) scale(1.08);
   }
   #rail-toggle svg {
-    width: 13px; height: 13px; flex: none;
-    transition: transform .2s cubic-bezier(.3,.7,.4,1);
+    width: 10px; height: 16px; flex: none;
+    transition: rotate .2s cubic-bezier(.3,.7,.4,1);
   }
-  #rail-toggle.rail-hidden svg { transform: scaleX(-1); }
-  #rail-toggle.rail-hidden { left: 0; }
+  #rail-toggle.rail-hidden {
+    left: 0;
+    transform: translate(0, -50%);
+    border-radius: 0 6px 6px 0;
+  }
+  #rail-toggle.rail-hidden:hover {
+    transform: translate(0, -50%) scale(1.08);
+  }
+  #rail-toggle.rail-hidden svg { rotate: 180deg; }
 </style>
 
 <script>
 (function(){
   var btn = document.getElementById('rail-toggle');
+  var RAIL_DEFAULT = 188;
   var railVisible = true;
   try { railVisible = localStorage.getItem('deck-stage.railVisible') !== '0'; } catch(e) {}
 
+  function getRailW() {
+    try {
+      var w = parseInt(localStorage.getItem('deck-stage.railW'), 10);
+      return isNaN(w) ? RAIL_DEFAULT : w;
+    } catch(e) { return RAIL_DEFAULT; }
+  }
+
   function sync() {
-    btn.classList.toggle('rail-hidden', !railVisible);
-    btn.title = railVisible ? 'Ocultar panel' : 'Mostrar panel';
+    if (railVisible) {
+      btn.classList.remove('rail-hidden');
+      btn.style.left = getRailW() + 'px';
+      btn.setAttribute('aria-label', 'Ocultar panel');
+    } else {
+      btn.classList.add('rail-hidden');
+      btn.style.left = '0';
+      btn.setAttribute('aria-label', 'Mostrar panel');
+    }
   }
 
   function setRail(on) {
@@ -609,7 +629,6 @@
 
   btn.addEventListener('click', function() { setRail(!railVisible); });
 
-  // Keep button in sync if the rail is toggled by other means (e.g. keyboard R)
   window.addEventListener('message', function(e) {
     if (e.data && e.data.type === '__deck_rail_visible' && typeof e.data.on === 'boolean') {
       railVisible = e.data.on;
