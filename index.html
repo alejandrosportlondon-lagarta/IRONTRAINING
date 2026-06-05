@@ -57,15 +57,15 @@
   /* ---------- kicker ---------- */
   .kicker{ display:flex; align-items:center; gap:14px; font-family:var(--disp);
     font-weight:700; font-size:23px; letter-spacing:.18em; text-transform:uppercase; }
-  .kicker .tick{ width:13px; height:13px; background:var(--accent); transform:skewX(-7deg); flex:none; }
-  .kicker .num{ color:var(--accent); }
+  .kicker .tick{ width:13px; height:13px; background:var(--steel-2); transform:skewX(-7deg); flex:none; }
+  .kicker .num{ color:var(--steel-2); }
   .dark .kicker{ color:var(--wht-70); }
   .light .kicker{ color:var(--ink-60); }
 
   /* ---------- titles ---------- */
-  .title{ font-family:var(--body); font-weight:800; letter-spacing:-.02em;
-    font-size:80px; line-height:.98; margin:18px 0 0; text-wrap:balance; }
-  .title.sm{ font-size:66px; }
+  .title{ font-family:var(--disp); font-weight:900; letter-spacing:-.03em;
+    font-size:84px; line-height:.96; margin:18px 0 0; text-wrap:balance; }
+  .title.sm{ font-size:70px; }
   .lead{ font-size:31px; line-height:1.34; font-weight:400; max-width:1180px; }
   .dark .lead{ color:var(--wht-70); }
   .light .lead{ color:var(--ink-60); }
@@ -120,8 +120,8 @@
   .cv-split .right::after{ content:""; position:absolute; inset:0;
     background:linear-gradient(90deg,rgba(11,11,12,.55),transparent 28%); }
   .cv-tag{ display:flex; align-items:center; gap:14px; font-family:var(--disp); font-weight:700;
-    font-size:22px; letter-spacing:.2em; text-transform:uppercase; color:var(--accent); }
-  .cv-tag .tick{ width:13px;height:13px;background:var(--accent);transform:skewX(-7deg); }
+    font-size:22px; letter-spacing:.2em; text-transform:uppercase; color:var(--wht-70); }
+  .cv-tag .tick{ width:13px;height:13px;background:var(--steel-2);transform:skewX(-7deg); }
   .cover-wm{ font-family:var(--disp); font-weight:900; letter-spacing:-.025em; transform:skewX(-7deg);
     line-height:.86; color:#fff; }
 
@@ -143,10 +143,10 @@
     background:linear-gradient(180deg,rgba(11,11,12,.45),transparent 50%); }
 
   /* =================== reusable content bits =================== */
-  .card{ background:#fff; border:1px solid var(--line-l); border-radius:14px; padding:34px 32px;
-    display:flex; flex-direction:column; gap:14px; }
-  .dark .card{ background:var(--ink-2); border-color:var(--line-d); }
-  .card .ci{ width:54px; height:54px; border-radius:11px; display:flex; align-items:center; justify-content:center;
+  .card{ background:#fff; border:1px solid var(--line-l); border-radius:8px; padding:34px 32px;
+    display:flex; flex-direction:column; gap:14px; box-shadow:0 2px 20px rgba(0,0,0,.07); }
+  .dark .card{ background:var(--ink-2); border-color:var(--line-d); box-shadow:none; }
+  .card .ci{ width:54px; height:54px; border-radius:8px; display:flex; align-items:center; justify-content:center;
     background:var(--paper-2); color:var(--ink); }
   .dark .card .ci{ background:var(--ink-3); color:#fff; }
   .card h3{ font-family:var(--body); font-weight:700; font-size:26px; margin:0; letter-spacing:-.01em; }
@@ -158,7 +158,7 @@
     font-weight:600; font-size:19px; }
   .light .chip{ background:#fff; border:1px solid var(--line-l); }
   .dark .chip{ background:var(--ink-2); border:1px solid var(--line-d); }
-  .chip .dot{ width:9px; height:9px; border-radius:999px; background:var(--accent); }
+  .chip .dot{ width:9px; height:9px; border-radius:999px; background:currentColor; opacity:.45; }
 
   .lift{ box-shadow:0 24px 60px -28px rgba(0,0,0,.55); }
 </style>
@@ -207,7 +207,7 @@
 
   <!-- ============ 2 · LA OPORTUNIDAD ============ -->
   <section class="slide light" data-screen-label="La oportunidad">
-    <span class="brk tl"></span><span class="brk tr"></span>
+    <span class="brk tl"></span><span class="brk tr"></span><span class="brk bl"></span><span class="brk br"></span>
     <div class="kicker anim"><span class="tick"></span><span class="num">01</span> · La oportunidad</div>
     <h1 class="title anim d1">El deporte sale a la calle</h1>
     <p class="lead anim d1" style="margin-top:22px;">Gines cuenta con parques y plazas con gran potencial. Falta una oferta de actividad física <strong>de proximidad, flexible y sin obra</strong> que los active a diario.</p>
@@ -233,7 +233,7 @@
 
   <!-- ============ 3 · QUÉ ES ============ -->
   <section class="slide dark" data-screen-label="La unidad móvil">
-    <span class="brk tl"></span><span class="brk br"></span>
+    <span class="brk tl"></span><span class="brk tr"></span><span class="brk bl"></span><span class="brk br"></span>
     <div style="display:flex; gap:64px; align-items:center; height:100%;">
       <div style="flex:0 0 42%; display:flex; flex-direction:column; justify-content:center;">
         <div class="kicker anim"><span class="tick"></span><span class="num">02</span> · La unidad móvil</div>
@@ -255,7 +255,7 @@
 
   <!-- ============ 4 · ESPECIFICACIONES ============ -->
   <section class="slide light" data-screen-label="Especificaciones">
-    <span class="brk tr"></span>
+    <span class="brk tl"></span><span class="brk tr"></span><span class="brk bl"></span><span class="brk br"></span>
     <div class="head-row">
       <div>
         <div class="kicker anim"><span class="tick"></span><span class="num">03</span> · Especificaciones</div>
@@ -293,7 +293,7 @@
 
   <!-- ============ 5 · OBJETIVOS ============ -->
   <section class="slide dark" data-screen-label="Objetivos">
-    <span class="brk tr"></span><span class="brk bl"></span>
+    <span class="brk tl"></span><span class="brk tr"></span><span class="brk bl"></span><span class="brk br"></span>
     <div class="kicker anim"><span class="tick"></span><span class="num">04</span> · Objetivos del proyecto</div>
     <h1 class="title anim d1" style="margin-top:14px;">Para qué lo hacemos</h1>
     <div style="display:grid; grid-template-columns:repeat(5,1fr); gap:26px; margin:auto 0; align-items:start;">
@@ -308,7 +308,7 @@
 
   <!-- ============ 6 · BENEFICIOS ============ -->
   <section class="slide light" data-screen-label="Beneficios">
-    <span class="brk tl"></span>
+    <span class="brk tl"></span><span class="brk tr"></span><span class="brk bl"></span><span class="brk br"></span>
     <div class="kicker anim"><span class="tick"></span><span class="num">05</span> · Beneficios para Gines</div>
     <h1 class="title anim d1" style="margin-top:14px;">Lo que aporta al municipio</h1>
     <div style="display:grid; grid-template-columns:repeat(3,1fr); gap:24px; margin:auto 0;">
@@ -327,7 +327,7 @@
 
   <!-- ============ NEW · SOSTENIBILIDAD ============ -->
   <section class="slide dark" data-screen-label="Sostenibilidad">
-    <span class="brk tl"></span><span class="brk br"></span>
+    <span class="brk tl"></span><span class="brk tr"></span><span class="brk bl"></span><span class="brk br"></span>
     <div class="kicker anim"><span class="tick"></span><span class="num">06</span> · Sostenibilidad</div>
     <h1 class="title anim d1" style="margin-top:14px;">Salud pública sin huella</h1>
     <div style="display:flex; gap:48px; margin-top:30px; flex:1; min-height:0;">
@@ -351,7 +351,7 @@
 
   <!-- ============ 7 · UBICACIÓN Y HORARIOS ============ -->
   <section class="slide light" data-screen-label="Ubicación y horarios">
-    <span class="brk tr"></span><span class="brk bl"></span>
+    <span class="brk tl"></span><span class="brk tr"></span><span class="brk bl"></span><span class="brk br"></span>
     <div class="kicker anim"><span class="tick"></span><span class="num">07</span> · Ubicación y funcionamiento</div>
     <h1 class="title anim d1" style="margin-top:14px;">Cerca, todos los días</h1>
     <div style="display:flex; gap:48px; margin-top:36px; flex:1;">
@@ -384,7 +384,7 @@
 
   <!-- ============ 8 · PROGRAMA DE SESIONES ============ -->
   <section class="slide dark" data-screen-label="Programa de sesiones">
-    <span class="brk tl"></span><span class="brk br"></span>
+    <span class="brk tl"></span><span class="brk tr"></span><span class="brk bl"></span><span class="brk br"></span>
     <div class="kicker anim"><span class="tick"></span><span class="num">08</span> · Programa de actividades</div>
     <h1 class="title anim d1" style="margin-top:14px;">Entrenamiento para cada objetivo</h1>
     <div style="display:grid; grid-template-columns:repeat(4,1fr); gap:24px; margin:auto 0;">
@@ -398,7 +398,7 @@
 
   <!-- ============ 9 · RECURSOS Y SEGURIDAD ============ -->
   <section class="slide light" data-screen-label="Recursos y seguridad">
-    <span class="brk tr"></span>
+    <span class="brk tl"></span><span class="brk tr"></span><span class="brk bl"></span><span class="brk br"></span>
     <div class="kicker anim"><span class="tick"></span><span class="num">09</span> · Recursos y seguridad</div>
     <h1 class="title anim d1" style="margin-top:14px;">Material profesional y protocolos</h1>
     <div style="display:grid; grid-template-columns:1fr 1fr; gap:30px; margin-top:36px; flex:1;">
@@ -437,7 +437,7 @@
 
   <!-- ============ 10 · APP DE RESERVAS ============ -->
   <section class="slide light" data-screen-label="App de reservas">
-    <span class="brk tl"></span><span class="brk br"></span>
+    <span class="brk tl"></span><span class="brk tr"></span><span class="brk bl"></span><span class="brk br"></span>
     <div class="appwrap">
       <div class="app-copy">
         <div class="kicker anim"><span class="tick"></span><span class="num">10</span> · App de reservas</div>
@@ -554,24 +554,24 @@
 <style>
 
   /* component-specific bits */
-  .spec .sl{ font-family:var(--disp); font-weight:700; font-size:19px; letter-spacing:.12em; text-transform:uppercase; color:var(--accent); }
+  .spec .sl{ font-family:var(--disp); font-weight:700; font-size:19px; letter-spacing:.12em; text-transform:uppercase; color:var(--steel-3); }
   .spec .sv{ font-size:25px; font-weight:600; margin-top:3px; line-height:1.1; }
   .spec{ padding:10px 0; border-bottom:1px solid var(--line-l); }
-  .dfig{ margin:0; border-radius:12px; overflow:hidden; background:#fff; border:1px solid var(--line-l); }
+  .dfig{ margin:0; border-radius:8px; overflow:hidden; background:#fff; border:1px solid var(--line-l); }
   .dfig img{ width:100%; height:118px; object-fit:cover; display:block; }
   .dfig figcaption{ padding:10px 15px; font-size:16px; font-weight:600; color:var(--ink-60); }
   .obj{ }
-  .obj .on{ font-family:var(--disp); font-weight:900; font-size:76px; line-height:.9; color:var(--accent); transform:skewX(-7deg); }
+  .obj .on{ font-family:var(--disp); font-weight:900; font-size:76px; line-height:.9; color:var(--steel-2); transform:skewX(-7deg); }
   .obj p{ font-size:24px; line-height:1.28; font-weight:500; margin:14px 0 0; padding-top:16px; border-top:2px solid var(--line-d); }
-  .tband{ background:#fff; border:1px solid var(--line-l); border-radius:14px; padding:30px 34px; }
-  .tband .tlbl{ font-family:var(--disp); font-weight:700; font-size:19px; letter-spacing:.16em; color:var(--accent); }
+  .tband{ background:#fff; border:1px solid var(--line-l); border-radius:8px; padding:30px 34px; box-shadow:0 2px 20px rgba(0,0,0,.07); }
+  .tband .tlbl{ font-family:var(--disp); font-weight:700; font-size:19px; letter-spacing:.16em; color:var(--steel-3); }
   .tband .thr{ font-family:var(--disp); font-weight:800; font-size:54px; letter-spacing:.02em; margin-top:6px; }
   .chk{ position:relative; padding-left:40px; font-size:23px; font-weight:500; }
   .chk::before{ content:""; position:absolute; left:0; top:2px; width:24px; height:24px; border-radius:6px; background:var(--accent);
     -webkit-mask:url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'><path fill='none' stroke='black' stroke-width='3' stroke-linecap='round' stroke-linejoin='round' d='M5 12l4 4 10-10'/></svg>") center/16px no-repeat;
     mask:url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'><path fill='none' stroke='black' stroke-width='3' stroke-linecap='round' stroke-linejoin='round' d='M5 12l4 4 10-10'/></svg>") center/16px no-repeat; }
   .step{ display:flex; align-items:center; gap:18px; font-size:25px; font-weight:500; }
-  .step .sn{ font-family:var(--disp); font-weight:900; font-size:30px; color:var(--ink); background:var(--accent); width:46px; height:46px; border-radius:10px; display:flex; align-items:center; justify-content:center; flex:none; transform:skewX(-7deg); }
+  .step .sn{ font-family:var(--disp); font-weight:900; font-size:30px; color:var(--ink); background:var(--accent); width:46px; height:46px; border-radius:4px; display:flex; align-items:center; justify-content:center; flex:none; transform:skewX(-7deg); }
   .ct{ display:flex; align-items:center; gap:14px; }
   .ct .ico{ width:22px; height:22px; flex:none; }
   .ct span{ white-space:nowrap; }
@@ -581,7 +581,7 @@
   .app-copy{ flex:0 0 37%; }
   .feat{ display:flex; gap:18px; align-items:flex-start; padding:22px 0; border-top:1px solid var(--line-l); }
   .feat.first{ border-top:0; padding-top:6px; }
-  .feat .fi{ width:50px; height:50px; border-radius:13px; background:var(--ink); color:#fff; display:flex; align-items:center; justify-content:center; flex:none; }
+  .feat .fi{ width:50px; height:50px; border-radius:8px; background:var(--ink); color:#fff; display:flex; align-items:center; justify-content:center; flex:none; }
   .feat .fi .ico{ width:25px; height:25px; }
   .feat h4{ margin:0; font-size:24px; font-weight:700; letter-spacing:-.01em; }
   .feat p{ margin:6px 0 0; font-size:19.5px; line-height:1.36; color:var(--ink-60); }
