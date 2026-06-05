@@ -1,0 +1,680 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>IRONTRAINING — Propuesta Ayuntamiento de Gines</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Archivo:wght@400;500;600;700;800;900&family=Saira+Condensed:wght@500;600;700;800;900&display=swap" rel="stylesheet">
+<style>
+  deck-stage:not(:defined){ visibility:hidden; }
+  *{ box-sizing:border-box; }
+  :root{
+    --ink:#0B0B0C;
+    --ink-2:#141518;
+    --ink-3:#1D1F23;
+    --paper:#F4F3F0;
+    --paper-2:#E9E7E1;
+    --paper-3:#DEDBD3;
+    --steel-1:#C9CCD2;
+    --steel-2:#9A9EA6;
+    --steel-3:#6E727A;
+    --accent:#FF4D12;
+    --ink-60:rgba(11,11,12,.60);
+    --ink-45:rgba(11,11,12,.45);
+    --wht-70:rgba(255,255,255,.70);
+    --wht-50:rgba(255,255,255,.50);
+    --line-d:rgba(255,255,255,.14);
+    --line-l:rgba(11,11,12,.14);
+    --disp:'Saira Condensed',sans-serif;
+    --body:'Archivo',sans-serif;
+  }
+  html,body{ margin:0; background:#000; }
+
+  /* ---------- slide base ---------- */
+  .slide{
+    font-family:var(--body);
+    display:flex; flex-direction:column;
+    padding:78px 104px 70px;
+    position:relative; overflow:hidden;
+    -webkit-font-smoothing:antialiased;
+  }
+  .slide.dark{ background:var(--ink); color:#fff; }
+  .slide.light{ background:var(--paper); color:var(--ink); }
+  .slide.light::after,.slide.dark::after{ content:""; position:absolute; inset:0; pointer-events:none; }
+
+  /* metallic hairline */
+  .steel-rule{ height:3px; border:0; margin:0;
+    background:linear-gradient(90deg,#6E727A,#E7E9ED 18%,#9A9EA6 40%,#fff 52%,#9A9EA6 64%,#E7E9ED 84%,#6E727A);
+    border-radius:2px; }
+
+  /* ---------- wordmark ---------- */
+  .wm{ font-family:var(--disp); font-weight:900; letter-spacing:-.02em;
+    transform:skewX(-7deg); display:inline-block; line-height:.9; }
+  .wm .o{ color:var(--accent); }
+
+  /* ---------- kicker ---------- */
+  .kicker{ display:flex; align-items:center; gap:14px; font-family:var(--disp);
+    font-weight:700; font-size:23px; letter-spacing:.18em; text-transform:uppercase; }
+  .kicker .tick{ width:13px; height:13px; background:var(--accent); transform:skewX(-7deg); flex:none; }
+  .kicker .num{ color:var(--accent); }
+  .dark .kicker{ color:var(--wht-70); }
+  .light .kicker{ color:var(--ink-60); }
+
+  /* ---------- titles ---------- */
+  .title{ font-family:var(--body); font-weight:800; letter-spacing:-.02em;
+    font-size:80px; line-height:.98; margin:18px 0 0; text-wrap:balance; }
+  .title.sm{ font-size:66px; }
+  .lead{ font-size:31px; line-height:1.34; font-weight:400; max-width:1180px; }
+  .dark .lead{ color:var(--wht-70); }
+  .light .lead{ color:var(--ink-60); }
+
+  .head-row{ display:flex; justify-content:space-between; align-items:flex-end; gap:40px; }
+
+  /* ---------- footer ---------- */
+  .foot{ position:absolute; left:104px; right:104px; bottom:34px;
+    display:flex; align-items:center; justify-content:space-between;
+    font-size:16px; letter-spacing:.04em; }
+  .foot .wm{ font-size:21px; transform:skewX(-7deg); }
+  .dark .foot{ color:var(--wht-50); }
+  .light .foot{ color:var(--ink-45); }
+  .dark .foot .wm{ color:#fff; } .light .foot .wm{ color:var(--ink); }
+  .foot .mid{ letter-spacing:.12em; text-transform:uppercase; font-size:14px; }
+  .foot .pg{ font-family:var(--disp); font-weight:700; font-size:19px; letter-spacing:.1em; }
+
+  /* corner brackets (frame motif) */
+  .brk{ position:absolute; width:34px; height:34px; pointer-events:none; opacity:.55; }
+  .dark .brk{ border-color:var(--steel-2); }
+  .light .brk{ border-color:var(--steel-3); }
+  .brk.tl{ top:34px; left:38px; border-left:2px solid; border-top:2px solid; }
+  .brk.tr{ top:34px; right:38px; border-right:2px solid; border-top:2px solid; }
+  .brk.bl{ bottom:30px; left:38px; border-left:2px solid; border-bottom:2px solid; }
+  .brk.br{ bottom:30px; right:38px; border-right:2px solid; border-bottom:2px solid; }
+
+  .ico{ width:1em; height:1em; display:inline-block; vertical-align:-.12em; }
+
+  /* ---------- entrance: subtle slide-up, never hides content (safe for PDF/PPTX capture) ---------- */
+  @media (prefers-reduced-motion:no-preference){
+    section[data-deck-active] .anim{ animation:rise .5s cubic-bezier(.2,.7,.3,1) both; }
+    section[data-deck-active] .anim.d1{ animation-delay:.05s; }
+    section[data-deck-active] .anim.d2{ animation-delay:.11s; }
+    section[data-deck-active] .anim.d3{ animation-delay:.17s; }
+    section[data-deck-active] .anim.d4{ animation-delay:.23s; }
+  }
+  @keyframes rise{ from{ transform:translateY(16px); } to{ transform:none; } }
+
+  /* =================== COVER =================== */
+  #cover{ padding:0; }
+  .cover-variant{ display:none; width:100%; height:100%; position:relative; }
+  html:not([data-cover]) .cv-split, html[data-cover="split"] .cv-split,
+  html[data-cover="hero"] .cv-hero,
+  html[data-cover="mono"] .cv-mono{ display:flex; }
+
+  /* cover · split */
+  .cv-split{ }
+  .cv-split .left{ flex:1; padding:96px 70px 96px 104px; display:flex; flex-direction:column; justify-content:center; }
+  .cv-split .right{ width:46%; position:relative; background:#000; overflow:hidden;
+    border-left:3px solid var(--steel-2); }
+  .cv-split .right img{ width:100%; height:100%; object-fit:cover; }
+  .cv-split .right::after{ content:""; position:absolute; inset:0;
+    background:linear-gradient(90deg,rgba(11,11,12,.55),transparent 28%); }
+  .cv-tag{ display:flex; align-items:center; gap:14px; font-family:var(--disp); font-weight:700;
+    font-size:22px; letter-spacing:.2em; text-transform:uppercase; color:var(--accent); }
+  .cv-tag .tick{ width:13px;height:13px;background:var(--accent);transform:skewX(-7deg); }
+  .cover-wm{ font-family:var(--disp); font-weight:900; letter-spacing:-.025em; transform:skewX(-7deg);
+    line-height:.86; color:#fff; }
+
+  /* cover · hero */
+  .cv-hero{ }
+  .cv-hero img{ position:absolute; inset:0; width:100%; height:100%; object-fit:cover; }
+  .cv-hero .ov{ position:absolute; inset:0;
+    background:linear-gradient(180deg,rgba(11,11,12,.5) 0%,rgba(11,11,12,.15) 38%,rgba(11,11,12,.45) 70%,rgba(11,11,12,.92) 100%); }
+  .cv-hero .inner{ position:relative; z-index:2; width:100%; display:flex; flex-direction:column;
+    justify-content:flex-end; padding:104px; }
+
+  /* cover · mono */
+  .cv-mono{ flex-direction:column; background:var(--ink); }
+  .cv-mono .top{ flex:1; display:flex; flex-direction:column; justify-content:center; align-items:center;
+    text-align:center; padding:0 80px; }
+  .cv-mono .band{ height:300px; position:relative; overflow:hidden; border-top:3px solid var(--steel-2); }
+  .cv-mono .band img{ width:100%; height:100%; object-fit:cover; object-position:center 38%; }
+  .cv-mono .band::after{ content:""; position:absolute; inset:0;
+    background:linear-gradient(180deg,rgba(11,11,12,.45),transparent 50%); }
+
+  /* =================== reusable content bits =================== */
+  .card{ background:#fff; border:1px solid var(--line-l); border-radius:14px; padding:34px 32px;
+    display:flex; flex-direction:column; gap:14px; }
+  .dark .card{ background:var(--ink-2); border-color:var(--line-d); }
+  .card .ci{ width:54px; height:54px; border-radius:11px; display:flex; align-items:center; justify-content:center;
+    background:var(--paper-2); color:var(--ink); }
+  .dark .card .ci{ background:var(--ink-3); color:#fff; }
+  .card h3{ font-family:var(--body); font-weight:700; font-size:26px; margin:0; letter-spacing:-.01em; }
+  .card p{ margin:0; font-size:20.5px; line-height:1.4; }
+  .dark .card p{ color:var(--wht-70); } .light .card p{ color:var(--ink-60); }
+  .card .ci .ico{ width:28px; height:28px; }
+
+  .chip{ display:inline-flex; align-items:center; gap:10px; padding:11px 18px; border-radius:999px;
+    font-weight:600; font-size:19px; }
+  .light .chip{ background:#fff; border:1px solid var(--line-l); }
+  .dark .chip{ background:var(--ink-2); border:1px solid var(--line-d); }
+  .chip .dot{ width:9px; height:9px; border-radius:999px; background:var(--accent); }
+
+  .lift{ box-shadow:0 24px 60px -28px rgba(0,0,0,.55); }
+</style>
+</head>
+<body>
+
+<deck-stage width="1920" height="1080">
+
+  <!-- ============ 1 · PORTADA ============ -->
+  <section id="cover" class="slide dark" data-screen-label="Portada">
+    <!-- variant: split -->
+    <div class="cover-variant cv-split">
+      <div class="left">
+        <div class="cv-tag anim"><span class="tick"></span> Unidad móvil deportiva</div>
+        <div class="cover-wm anim d1" style="font-size:120px; margin:26px 0 0;">IR<span style="color:var(--accent)">O</span>NTRAINING</div>
+        <hr class="steel-rule anim d1" style="width:300px; margin:30px 0 0;">
+        <p class="anim d2" style="font-size:34px; line-height:1.3; font-weight:500; max-width:640px; margin:34px 0 0; color:var(--wht-70);">
+          Gimnasio móvil para actividades<br>deportivas municipales</p>
+        <div class="anim d3" style="margin-top:60px; font-family:var(--disp); font-weight:700; font-size:24px; letter-spacing:.16em; text-transform:uppercase; color:#fff;">
+          Propuesta para Espacios Públicos</div>
+        <div class="anim d3" style="margin-top:10px; color:var(--wht-50); letter-spacing:.06em; font-size:18px;">Programa de actividad física saludable al aire libre · 2026</div>
+      </div>
+      <div class="right"><img src="assets/hero.jpg" alt="Unidad móvil IRONTRAINING abierta con material deportivo"></div>
+    </div>
+    <!-- variant: hero -->
+    <div class="cover-variant cv-hero">
+      <img src="assets/hero.jpg" alt="Unidad móvil IRONTRAINING">
+      <div class="ov"></div>
+      <div class="inner">
+        <div class="cv-tag"><span class="tick"></span> Unidad móvil deportiva · Propuesta para Gines</div>
+        <div class="cover-wm" style="font-size:170px; margin:18px 0 0;">IR<span style="color:var(--accent)">O</span>NTRAINING</div>
+        <p style="font-size:36px; font-weight:500; color:#fff; margin:20px 0 0; max-width:1100px;">Gimnasio móvil para actividades deportivas municipales</p>
+      </div>
+    </div>
+    <!-- variant: mono -->
+    <div class="cover-variant cv-mono">
+      <div class="top">
+        <div class="cv-tag" style="justify-content:center;"><span class="tick"></span> Propuesta para Espacios Públicos</div>
+        <div class="cover-wm" style="font-size:185px; margin:30px 0 0;">IR<span style="color:var(--accent)">O</span>NTRAINING</div>
+        <hr class="steel-rule" style="width:360px; margin:38px 0 0;">
+        <p style="font-size:34px; font-weight:500; color:var(--wht-70); margin:34px 0 0;">Gimnasio móvil para actividades deportivas municipales</p>
+      </div>
+      <div class="band"><img src="assets/hero.jpg" alt="Unidad móvil IRONTRAINING"></div>
+    </div>
+  </section>
+
+  <!-- ============ 2 · LA OPORTUNIDAD ============ -->
+  <section class="slide light" data-screen-label="La oportunidad">
+    <span class="brk tl"></span><span class="brk tr"></span>
+    <div class="kicker anim"><span class="tick"></span><span class="num">01</span> · La oportunidad</div>
+    <h1 class="title anim d1">El deporte sale a la calle</h1>
+    <p class="lead anim d1" style="margin-top:22px;">Gines cuenta con parques y plazas con gran potencial. Falta una oferta de actividad física <strong>de proximidad, flexible y sin obra</strong> que los active a diario.</p>
+    <div style="display:grid; grid-template-columns:repeat(3,1fr); gap:28px; margin:auto 0;">
+      <div class="card anim d2">
+        <span class="ci"><svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7"><path d="M3 20h18M5 20V9l5-4 5 4v11M15 20v-7h4v7" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
+        <h3>Espacios listos para activarse</h3>
+        <p>Parques y plazas municipales infrautilizados durante gran parte del día.</p>
+      </div>
+      <div class="card anim d3">
+        <span class="ci"><svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7"><path d="M12 21s-7-4.6-7-10a4 4 0 017-2.6A4 4 0 0119 11c0 5.4-7 10-7 10z" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
+        <h3>Demanda de bienestar</h3>
+        <p>Cada vez más vecinos quieren entrenar al aire libre, en grupos reducidos y con acompañamiento profesional.</p>
+      </div>
+      <div class="card anim d4">
+        <span class="ci"><svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7"><path d="M3 17h2l1.5-4.5A2 2 0 018.4 11H15a2 2 0 011.9 1.4L18.5 17H21M6 17v2M18 17v2M7.5 17h9" stroke-linecap="round" stroke-linejoin="round"/><circle cx="9" cy="17" r="1.4"/><circle cx="16" cy="17" r="1.4"/></svg></span>
+        <h3>Sin instalaciones permanentes</h3>
+        <p>La unidad presta el servicio y se retira a diario: cero impacto sobre el espacio público.</p>
+      </div>
+    </div>
+    <div class="foot"><span class="wm">IR<span class="o">O</span>NTRAINING</span><span class="mid">Propuesta · Espacios Públicos</span><span class="pg">02</span></div>
+  </section>
+
+  <!-- ============ 3 · QUÉ ES ============ -->
+  <section class="slide dark" data-screen-label="La unidad móvil">
+    <span class="brk tl"></span><span class="brk br"></span>
+    <div style="display:flex; gap:64px; align-items:center; height:100%;">
+      <div style="flex:0 0 42%; display:flex; flex-direction:column; justify-content:center;">
+        <div class="kicker anim"><span class="tick"></span><span class="num">02</span> · La unidad móvil</div>
+        <h1 class="title anim d1" style="margin-top:18px;">Un gimnasio funcional<br>sobre ruedas</h1>
+        <p class="lead anim d2" style="margin-top:24px;">Remolque deportivo totalmente equipado. Se despliega en el parque, se monta en minutos y se retira al terminar la sesión.</p>
+        <div style="display:flex; flex-wrap:wrap; gap:14px; margin-top:34px;">
+          <span class="chip anim d2"><span class="dot"></span>Montaje en minutos</span>
+          <span class="chip anim d3"><span class="dot"></span>Retirada diaria</span>
+          <span class="chip anim d3"><span class="dot"></span>Material profesional</span>
+          <span class="chip anim d4"><span class="dot"></span>App de reservas y pagos</span>
+        </div>
+      </div>
+      <div class="anim d2" style="flex:1; align-self:stretch; margin:96px 0; position:relative; border-radius:16px; overflow:hidden; border:1px solid var(--line-d);">
+        <img src="assets/hero.jpg" alt="Unidad móvil IRONTRAINING abierta mostrando el material" style="width:100%; height:100%; object-fit:cover;">
+      </div>
+    </div>
+    <div class="foot"><span class="wm">IR<span class="o">O</span>NTRAINING</span><span class="mid">Propuesta · Espacios Públicos</span><span class="pg">03</span></div>
+  </section>
+
+  <!-- ============ 4 · ESPECIFICACIONES ============ -->
+  <section class="slide light" data-screen-label="Especificaciones">
+    <span class="brk tr"></span>
+    <div class="head-row">
+      <div>
+        <div class="kicker anim"><span class="tick"></span><span class="num">03</span> · Especificaciones</div>
+        <h1 class="title sm anim d1" style="margin-top:14px;">Diseñado para el uso intensivo</h1>
+      </div>
+      <div class="anim d1" style="display:flex; gap:12px;">
+        <span class="chip"><span class="dot"></span>3,47 m largo</span>
+        <span class="chip"><span class="dot"></span>1,90 m ancho</span>
+        <span class="chip"><span class="dot"></span>2,67 m alto</span>
+      </div>
+    </div>
+
+    <div style="display:flex; gap:54px; margin-top:30px; flex:1; min-height:0;">
+      <div class="anim d2" style="flex:0 0 40%; background:#fff; border:1px solid var(--line-l); border-radius:16px; display:flex; align-items:center; justify-content:center; padding:24px; min-height:0;">
+        <img src="assets/dimensiones-trailer.jpg" alt="Dimensiones del remolque IRONTRAINING" style="width:100%; height:100%; object-fit:contain;">
+      </div>
+      <div class="anim d3" style="flex:1; display:grid; grid-template-columns:1fr 1fr; gap:14px 40px; align-content:center;">
+        <div class="spec"><div class="sl">Estructura</div><div class="sv">Aluminio e hierro reciclables</div></div>
+        <div class="spec"><div class="sl">Masa (MOM)</div><div class="sv">572 kg en orden de marcha</div></div>
+        <div class="spec"><div class="sl">Ruedas</div><div class="sv">175/70 R14 · eje con freno</div></div>
+        <div class="spec"><div class="sl">Enganche</div><div class="sv">KNOTT KF13 · rueda jockey 60 mm</div></div>
+        <div class="spec"><div class="sl">Estabilización</div><div class="sv">4 patas AL-KO regulables</div></div>
+        <div class="spec"><div class="sl">Iluminación</div><div class="sv">Homologada AJ.BA · LED</div></div>
+      </div>
+    </div>
+
+    <div class="anim d4" style="display:grid; grid-template-columns:repeat(4,1fr); gap:18px; margin-top:24px;">
+      <figure class="dfig"><img src="assets/detalle-1.jpg" alt="Puertas en libro"><figcaption>Doble puerta en libro</figcaption></figure>
+      <figure class="dfig"><img src="assets/detalle-2.jpg" alt="Puerta elevable"><figcaption>Puerta lateral elevable</figcaption></figure>
+      <figure class="dfig"><img src="assets/detalle-3.jpg" alt="Rampa de acceso"><figcaption>Rampa trasera antideslizante</figcaption></figure>
+      <figure class="dfig"><img src="assets/detalle-4.jpg" alt="Eje y patas"><figcaption>Eje único y patas</figcaption></figure>
+    </div>
+    <div class="foot"><span class="wm">IR<span class="o">O</span>NTRAINING</span><span class="mid">Propuesta · Espacios Públicos</span><span class="pg">04</span></div>
+  </section>
+
+  <!-- ============ 5 · OBJETIVOS ============ -->
+  <section class="slide dark" data-screen-label="Objetivos">
+    <span class="brk tr"></span><span class="brk bl"></span>
+    <div class="kicker anim"><span class="tick"></span><span class="num">04</span> · Objetivos del proyecto</div>
+    <h1 class="title anim d1" style="margin-top:14px;">Para qué lo hacemos</h1>
+    <div style="display:grid; grid-template-columns:repeat(5,1fr); gap:26px; margin:auto 0; align-items:start;">
+      <div class="obj anim d1"><div class="on">01</div><p>Promover hábitos de vida saludables</p></div>
+      <div class="obj anim d2"><div class="on">02</div><p>Incrementar la práctica deportiva entre la población adulta</p></div>
+      <div class="obj anim d2"><div class="on">03</div><p>Dinamizar los parques y espacios públicos municipales</p></div>
+      <div class="obj anim d3"><div class="on">04</div><p>Complementar la oferta deportiva existente</p></div>
+      <div class="obj anim d4"><div class="on">05</div><p>Favorecer la actividad física accesible y de proximidad</p></div>
+    </div>
+    <div class="foot"><span class="wm">IR<span class="o">O</span>NTRAINING</span><span class="mid">Propuesta · Espacios Públicos</span><span class="pg">05</span></div>
+  </section>
+
+  <!-- ============ 6 · BENEFICIOS ============ -->
+  <section class="slide light" data-screen-label="Beneficios">
+    <span class="brk tl"></span>
+    <div class="kicker anim"><span class="tick"></span><span class="num">05</span> · Beneficios para Gines</div>
+    <h1 class="title anim d1" style="margin-top:14px;">Lo que aporta al municipio</h1>
+    <div style="display:grid; grid-template-columns:repeat(3,1fr); gap:24px; margin:auto 0;">
+      <div class="card anim d1"><span class="ci"><svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7"><path d="M12 21s-7-4.6-7-10a4 4 0 017-2.6A4 4 0 0119 11c0 5.4-7 10-7 10z" stroke-linejoin="round"/></svg></span><h3>Salud y ejercicio físico</h3><p>Fomento directo del bienestar de los vecinos de Gines.</p></div>
+      <div class="card anim d2"><span class="ci"><svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7"><path d="M3 20h18M5 20V9l5-4 5 4v11M15 20v-7h4v7" stroke-linecap="round" stroke-linejoin="round"/></svg></span><h3>Activación de espacios</h3><p>Vida y movimiento en parques y plazas a diario.</p></div>
+      <div class="card anim d3"><span class="ci"><svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7"><circle cx="12" cy="8" r="3.2"/><path d="M5 20a7 7 0 0114 0" stroke-linecap="round"/></svg></span><h3>Jornadas gratuitas</h3><p>Sesiones abiertas y sin coste para los vecinos.</p></div>
+      <div class="card anim d2"><span class="ci"><svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7"><path d="M8 21V7l4-4 4 4v14M5 21h14M12 3v18" stroke-linecap="round" stroke-linejoin="round"/></svg></span><h3>Eventos municipales</h3><p>Colaboración en pruebas y celebraciones deportivas.</p></div>
+      <div class="card anim d3"><span class="ci"><svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7"><path d="M12 3l7 3v5c0 4.4-3 7.6-7 9-4-1.4-7-4.6-7-9V6l7-3z" stroke-linejoin="round"/><path d="M9 12l2 2 4-4" stroke-linecap="round" stroke-linejoin="round"/></svg></span><h3>Imagen de Gines</h3><p>Refuerza el perfil de municipio activo y saludable.</p></div>
+      <div class="anim d4" style="background:var(--ink); color:#fff; border-radius:14px; padding:30px 32px; display:flex; flex-direction:column; justify-content:center;">
+        <div style="font-family:var(--disp); font-weight:800; font-size:21px; letter-spacing:.14em; color:var(--accent);">EN UNA FRASE</div>
+        <p style="margin:10px 0 0; font-size:24px; line-height:1.32; font-weight:500;">Más salud pública sin construir ni mantener una sola instalación.</p>
+      </div>
+    </div>
+    <div class="foot"><span class="wm">IR<span class="o">O</span>NTRAINING</span><span class="mid">Propuesta · Espacios Públicos</span><span class="pg">06</span></div>
+  </section>
+
+  <!-- ============ NEW · SOSTENIBILIDAD ============ -->
+  <section class="slide dark" data-screen-label="Sostenibilidad">
+    <span class="brk tl"></span><span class="brk br"></span>
+    <div class="kicker anim"><span class="tick"></span><span class="num">06</span> · Sostenibilidad</div>
+    <h1 class="title anim d1" style="margin-top:14px;">Salud pública sin huella</h1>
+    <div style="display:flex; gap:48px; margin-top:30px; flex:1; min-height:0;">
+      <div class="anim d2" style="flex:0 0 33%; background:var(--ink-2); border:1px solid var(--line-d); border-radius:16px; padding:46px; display:flex; flex-direction:column; justify-content:center;">
+        <div style="font-family:var(--disp); font-weight:900; font-size:210px; line-height:.8; color:var(--accent); transform:skewX(-7deg);">0</div>
+        <div style="font-family:var(--disp); font-weight:700; font-size:25px; letter-spacing:.12em; text-transform:uppercase; margin-top:10px;">Consumo energético</div>
+        <p style="color:var(--wht-70); font-size:21px; line-height:1.42; margin-top:16px;">Material que no necesita alimentación eléctrica. Aprovecha la luz del sol y las farolas existentes, sin contaminación lumínica añadida.</p>
+      </div>
+      <div class="anim d3" style="flex:1; display:grid; grid-template-columns:1fr 1fr; gap:22px;">
+        <div class="card"><span class="ci"><svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7"><path d="M4 21c0-9 7-16 16-16 0 9-7 16-16 16z" stroke-linejoin="round"/><path d="M4 21c5-5 8-8 11-11" stroke-linecap="round"/></svg></span><h3>Materiales reciclables</h3><p>Aluminio e hierro, duraderos y reciclables sin perder propiedades. Equipo con textil reciclado.</p></div>
+        <div class="card"><span class="ci"><svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7"><path d="M3 17h2l1.5-4.5A2 2 0 018.4 11H15a2 2 0 011.9 1.4L18.5 17H21" stroke-linecap="round" stroke-linejoin="round"/><circle cx="9" cy="17" r="1.6"/><circle cx="16" cy="17" r="1.6"/></svg></span><h3>Movilidad responsable</h3><p>El gimnasio se acerca al vecino: menos desplazamientos y menos emisiones, también en pedanías y anejos.</p></div>
+        <div class="card"><span class="ci"><svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7"><path d="M12 3l6 8h-3.5v4h-5v-4H6l6-8z" stroke-linejoin="round"/><path d="M12 15v6" stroke-linecap="round"/></svg></span><h3>Entornos activos</h3><p>Transforma parques, plazas y paseos en espacios vivos, saludables y participativos.</p></div>
+        <div style="background:var(--ink-2); border:1px solid var(--line-d); border-radius:14px; padding:30px 32px; display:flex; flex-direction:column; justify-content:center;">
+          <div style="font-family:var(--disp); font-weight:800; font-size:21px; letter-spacing:.14em; color:var(--accent);">COMPROMISO</div>
+          <p style="margin:10px 0 0; font-size:24px; line-height:1.32; font-weight:500;">Energía cero, materiales reciclables y movilidad limpia: salud para Gines y respeto por el entorno.</p>
+        </div>
+      </div>
+    </div>
+    <div class="foot"><span class="wm">IR<span class="o">O</span>NTRAINING</span><span class="mid">Propuesta · Espacios Públicos</span><span class="pg">07</span></div>
+  </section>
+
+  <!-- ============ 7 · UBICACIÓN Y HORARIOS ============ -->
+  <section class="slide light" data-screen-label="Ubicación y horarios">
+    <span class="brk tr"></span><span class="brk bl"></span>
+    <div class="kicker anim"><span class="tick"></span><span class="num">07</span> · Ubicación y funcionamiento</div>
+    <h1 class="title anim d1" style="margin-top:14px;">Cerca, todos los días</h1>
+    <div style="display:flex; gap:48px; margin-top:36px; flex:1;">
+      <div class="anim d2" style="flex:0 0 42%; background:var(--ink); color:#fff; border-radius:16px; padding:48px; display:flex; flex-direction:column; justify-content:center;">
+        <svg class="ico" viewBox="0 0 24 24" fill="none" stroke="var(--accent)" stroke-width="1.7" style="width:42px; height:42px;"><path d="M12 22s7-6.3 7-12a7 7 0 10-14 0c0 5.7 7 12 7 12z" stroke-linejoin="round"/><circle cx="12" cy="10" r="2.6"/></svg>
+        <div style="font-family:var(--disp); font-weight:700; font-size:22px; letter-spacing:.14em; color:var(--wht-70); margin-top:24px;">UBICACIÓN PREFERENTE</div>
+        <div style="font-size:38px; font-weight:700; line-height:1.08; margin-top:10px;">Espacios Públicos</div>
+        <p style="color:var(--wht-70); font-size:21px; margin-top:18px;">autorizados por el Ayuntamiento, con ocupación temporal.</p>
+        <div style="margin-top:30px; display:flex; gap:12px;">
+          <span class="chip" style="background:var(--ink-2); border-color:var(--line-d);"><span class="dot"></span>Retirada diaria del equipamiento</span>
+        </div>
+      </div>
+      <div class="anim d3" style="flex:1; display:flex; flex-direction:column; gap:18px;">
+        <div style="display:grid; grid-template-columns:1fr 1fr; gap:18px;">
+          <div class="tband"><div class="tlbl">MAÑANA</div><div class="thr">07:00 — 11:00</div></div>
+          <div class="tband"><div class="tlbl">TARDE</div><div class="thr">18:00 — 22:00</div></div>
+        </div>
+        <div class="card" style="flex-direction:row; align-items:center; gap:22px;">
+          <span class="ci"><svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7"><circle cx="9" cy="8" r="3"/><path d="M2 20a7 7 0 0113-3.5" stroke-linecap="round"/><circle cx="17" cy="10" r="2.4"/><path d="M14.5 20a5 5 0 017.5-2.3" stroke-linecap="round"/></svg></span>
+          <div><h3 style="margin:0;">Grupos reducidos</h3><p style="margin:4px 0 0;">Hasta 10 participantes por sesión, con atención cercana.</p></div>
+        </div>
+        <div class="card" style="flex-direction:row; align-items:center; gap:22px;">
+          <span class="ci"><svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7"><circle cx="12" cy="12" r="8.5"/><path d="M12 7v5l3.5 2" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
+          <div><h3 style="margin:0;">Dos franjas diarias</h3><p style="margin:4px 0 0;">Horario de mañana y de tarde, adaptable a la demanda municipal.</p></div>
+        </div>
+      </div>
+    </div>
+    <div class="foot"><span class="wm">IR<span class="o">O</span>NTRAINING</span><span class="mid">Propuesta · Espacios Públicos</span><span class="pg">08</span></div>
+  </section>
+
+  <!-- ============ 8 · PROGRAMA DE SESIONES ============ -->
+  <section class="slide dark" data-screen-label="Programa de sesiones">
+    <span class="brk tl"></span><span class="brk br"></span>
+    <div class="kicker anim"><span class="tick"></span><span class="num">08</span> · Programa de actividades</div>
+    <h1 class="title anim d1" style="margin-top:14px;">Entrenamiento para cada objetivo</h1>
+    <div style="display:grid; grid-template-columns:repeat(4,1fr); gap:24px; margin:auto 0;">
+      <div class="card anim d1"><span class="ci"><svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7"><path d="M4 9v6M7 7v10M17 7v10M20 9v6M7 12h10" stroke-linecap="round"/></svg></span><h3>Entrenamiento funcional</h3><p>Fuerza, equilibrio y coordinación con material profesional.</p></div>
+      <div class="card anim d2"><span class="ci"><svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7"><circle cx="12" cy="5" r="2"/><path d="M12 7v6m0 0l-3 5m3-5l3 5M7 10l5 1 5-1" stroke-linecap="round" stroke-linejoin="round"/></svg></span><h3>Movilidad</h3><p>Trabajo articular y flexibilidad para prevenir lesiones.</p></div>
+      <div class="card anim d3"><span class="ci"><svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7"><path d="M3 14l4-4 4 3 4-6 6 7" stroke-linecap="round" stroke-linejoin="round"/></svg></span><h3>Acondicionamiento físico</h3><p>Mejora cardiovascular y resistencia progresiva.</p></div>
+      <div class="card anim d4"><span class="ci"><svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7"><circle cx="12" cy="7" r="3.2"/><path d="M5 21a7 7 0 0114 0" stroke-linecap="round"/></svg></span><h3>Entrenamiento personal</h3><p>Sesiones individuales con seguimiento adaptado.</p></div>
+    </div>
+    <div class="foot"><span class="wm">IR<span class="o">O</span>NTRAINING</span><span class="mid">Propuesta · Espacios Públicos</span><span class="pg">09</span></div>
+  </section>
+
+  <!-- ============ 9 · RECURSOS Y SEGURIDAD ============ -->
+  <section class="slide light" data-screen-label="Recursos y seguridad">
+    <span class="brk tr"></span>
+    <div class="kicker anim"><span class="tick"></span><span class="num">09</span> · Recursos y seguridad</div>
+    <h1 class="title anim d1" style="margin-top:14px;">Material profesional y protocolos</h1>
+    <div style="display:grid; grid-template-columns:1fr 1fr; gap:30px; margin-top:36px; flex:1;">
+      <div class="anim d2" style="background:#fff; border:1px solid var(--line-l); border-radius:16px; padding:40px;">
+        <div style="font-family:var(--disp); font-weight:800; font-size:22px; letter-spacing:.14em; color:var(--accent);">MATERIAL FUNCIONAL</div>
+        <div style="display:flex; flex-wrap:wrap; gap:12px; margin-top:24px;">
+          <span class="chip"><span class="dot"></span>Barra olímpica 20 kg</span>
+          <span class="chip"><span class="dot"></span>Discos bumper</span>
+          <span class="chip"><span class="dot"></span>Rack multifunción</span>
+          <span class="chip"><span class="dot"></span>Banco multifunción</span>
+          <span class="chip"><span class="dot"></span>Kettlebells</span>
+          <span class="chip"><span class="dot"></span>Mancuernas 1–10 kg</span>
+          <span class="chip"><span class="dot"></span>TRX y anclajes</span>
+          <span class="chip"><span class="dot"></span>Superbandas</span>
+          <span class="chip"><span class="dot"></span>Cajón pliométrico</span>
+          <span class="chip"><span class="dot"></span>Trineo</span>
+          <span class="chip"><span class="dot"></span>Sacos de arena</span>
+          <span class="chip"><span class="dot"></span>Colchonetas</span>
+          <span class="chip"><span class="dot"></span>10 taquillas</span>
+          <span class="chip"><span class="dot"></span>Botiquín</span>
+        </div>
+        <p style="font-size:21px; color:var(--ink-60); line-height:1.4; margin-top:26px;">Todo el equipamiento viaja en la unidad móvil y se despliega listo para usar en cada sesión.</p>
+      </div>
+      <div class="anim d3" style="background:var(--ink); color:#fff; border-radius:16px; padding:40px;">
+        <div style="font-family:var(--disp); font-weight:800; font-size:22px; letter-spacing:.14em; color:var(--accent);">SEGURIDAD Y GARANTÍAS</div>
+        <ul style="list-style:none; padding:0; margin:24px 0 0; display:flex; flex-direction:column; gap:18px;">
+          <li class="chk">Seguro de responsabilidad civil</li>
+          <li class="chk">Protocolo de emergencias</li>
+          <li class="chk">Control de aforo en cada sesión</li>
+          <li class="chk">Revisión periódica del material</li>
+        </ul>
+      </div>
+    </div>
+    <div class="foot"><span class="wm">IR<span class="o">O</span>NTRAINING</span><span class="mid">Propuesta · Espacios Públicos</span><span class="pg">10</span></div>
+  </section>
+
+  <!-- ============ 10 · APP DE RESERVAS ============ -->
+  <section class="slide light" data-screen-label="App de reservas">
+    <span class="brk tl"></span><span class="brk br"></span>
+    <div class="appwrap">
+      <div class="app-copy">
+        <div class="kicker anim"><span class="tick"></span><span class="num">10</span> · App de reservas</div>
+        <h1 class="title sm anim d1" style="margin-top:14px;">Reserva tu<br>clase en segundos</h1>
+        <p class="lead anim d1" style="font-size:24px; margin-top:20px;">Una app sencilla para que cualquier vecino consulte el horario, reserve su plaza y valore cada sesión.</p>
+        <div style="margin-top:30px;">
+          <div class="feat first anim d2">
+            <span class="fi"><svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7"><rect x="3.5" y="5" width="17" height="16" rx="2.5"/><path d="M3.5 9.5h17M8 3v4M16 3v4" stroke-linecap="round"/></svg></span>
+            <div><h4>Consulta el horario</h4><p>Clases de mañana y tarde, actualizadas a diario por ubicación.</p></div>
+          </div>
+          <div class="feat anim d3">
+            <span class="fi"><svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7"><path d="M13 3L5 13h5l-1 8 8-10h-5l1-8z" stroke-linejoin="round"/></svg></span>
+            <div><h4>Reserva en un toque</h4><p>Plaza confirmada al instante, con disponibilidad en tiempo real.</p></div>
+          </div>
+          <div class="feat anim d4">
+            <span class="fi"><svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7"><path d="M12 3.5l2.6 5.3 5.9.9-4.3 4.1 1 5.8L12 17.9 6.8 19.6l1-5.8L3.5 9.7l5.9-.9L12 3.5z" stroke-linejoin="round"/></svg></span>
+            <div><h4>Valora cada sesión</h4><p>Reseñas y puntuaciones de monitores y clases para mejorar el servicio.</p></div>
+          </div>
+        </div>
+      </div>
+
+      <div class="phones anim d2">
+        <!-- browse -->
+        <div class="phone phone-a">
+          <span class="island"></span>
+          <div class="screen"><div class="scr">
+            <div class="statusbar"><span>9:41</span><span class="sbr"><svg class="ico" viewBox="0 0 24 16" fill="currentColor"><rect x="1" y="4" width="3" height="9" rx="1"/><rect x="6" y="2" width="3" height="11" rx="1"/><rect x="11" y="6" width="3" height="7" rx="1" opacity=".4"/></svg><svg class="ico" viewBox="0 0 26 16" fill="none" stroke="currentColor" stroke-width="1.4"><rect x="1" y="3" width="20" height="10" rx="2.5"/><rect x="3" y="5" width="13" height="6" rx="1" fill="currentColor" stroke="none"/><path d="M23 6v4" stroke-linecap="round"/></svg></span></div>
+            <div class="app-top scr-pad">
+              <div class="app-wm">IR<span style="color:var(--accent)">O</span>NTRAINING</div>
+              <div class="app-loc"><svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M12 22s7-6.3 7-12a7 7 0 10-14 0c0 5.7 7 12 7 12z" stroke-linejoin="round"/><circle cx="12" cy="10" r="2.4"/></svg> P. Dolores Camino</div>
+            </div>
+            <div class="datepills scr-pad">
+              <div class="dp"><em>LUN</em><b>12</b></div>
+              <div class="dp on"><em>MAR</em><b>13</b></div>
+              <div class="dp"><em>MIÉ</em><b>14</b></div>
+              <div class="dp"><em>JUE</em><b>15</b></div>
+              <div class="dp"><em>VIE</em><b>16</b></div>
+            </div>
+            <div class="scr-pad"><div class="scr-h">Mañana · 4 clases</div></div>
+            <div class="classlist scr-pad">
+              <div class="cls sel"><div class="cls-t">07:00</div><div class="cls-b"><b>Entrenamiento funcional</b><small>Carlos M.</small></div><div class="cls-s ok">3 plazas</div></div>
+              <div class="cls"><div class="cls-t">08:00</div><div class="cls-b"><b>Movilidad</b><small>Ana R.</small></div><div class="cls-s ok">6 plazas</div></div>
+              <div class="cls"><div class="cls-t">09:00</div><div class="cls-b"><b>Acondicionamiento físico</b><small>Carlos M.</small></div><div class="cls-s low">1 plaza</div></div>
+              <div class="cls dim"><div class="cls-t">10:00</div><div class="cls-b"><b>Entrenamiento personal</b><small>Ana R.</small></div><div class="cls-s full">Completo</div></div>
+            </div>
+            <div class="tabbar">
+              <div class="tb on"><svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7"><path d="M3 11l9-7 9 7M5 10v10h14V10" stroke-linejoin="round"/></svg>Inicio</div>
+              <div class="tb"><svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7"><rect x="3.5" y="5" width="17" height="16" rx="2.5"/><path d="M3.5 9.5h17M8 3v4M16 3v4" stroke-linecap="round"/></svg>Reservas</div>
+              <div class="tb"><svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7"><circle cx="12" cy="8" r="3.4"/><path d="M5 21a7 7 0 0114 0" stroke-linecap="round"/></svg>Perfil</div>
+            </div>
+          </div></div>
+        </div>
+        <!-- detail + booking -->
+        <div class="phone phone-b">
+          <span class="island"></span>
+          <div class="screen"><div class="scr">
+            <div class="statusbar"><span>9:41</span><span class="sbr"><svg class="ico" viewBox="0 0 24 16" fill="currentColor"><rect x="1" y="4" width="3" height="9" rx="1"/><rect x="6" y="2" width="3" height="11" rx="1"/><rect x="11" y="6" width="3" height="7" rx="1" opacity=".4"/></svg><svg class="ico" viewBox="0 0 26 16" fill="none" stroke="currentColor" stroke-width="1.4"><rect x="1" y="3" width="20" height="10" rx="2.5"/><rect x="3" y="5" width="13" height="6" rx="1" fill="currentColor" stroke="none"/><path d="M23 6v4" stroke-linecap="round"/></svg></span></div>
+            <div class="det scr-pad">
+              <div class="det-back"><svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M15 5l-7 7 7 7" stroke-linecap="round" stroke-linejoin="round"/></svg> Volver al horario</div>
+              <div class="det-name">Entrenamiento<br>funcional</div>
+              <div class="det-when">Martes 13 · 07:00 – 07:45</div>
+              <div class="coach">
+                <span class="av">CM</span>
+                <div><b>Carlos Medina</b><div class="stars">★★★★★ <span>4,9 · 128 valoraciones</span></div></div>
+              </div>
+              <div class="det-chips"><span>45 min</span><span>Nivel medio</span><span>3 / 10 plazas</span></div>
+              <div class="det-note">Material profesional incluido. Trae agua y ropa cómoda. Apto para todos los niveles.</div>
+            </div>
+            <div class="det-cta scr-pad">
+              <button class="bookbtn">Reservar plaza</button>
+              <div class="cta-sub">Cancelación gratuita hasta 2 h antes</div>
+            </div>
+          </div></div>
+        </div>
+      </div>
+    </div>
+    <div class="foot"><span class="wm">IR<span class="o">O</span>NTRAINING</span><span class="mid">Propuesta · Espacios Públicos</span><span class="pg">11</span></div>
+  </section>
+
+  <!-- ============ 11 · CIERRE ============ -->
+  <section class="slide dark" data-screen-label="Próximos pasos">
+    <span class="brk tl"></span><span class="brk tr"></span><span class="brk bl"></span><span class="brk br"></span>
+    <div style="display:flex; gap:64px; height:100%; align-items:center;">
+      <div style="flex:1;">
+        <div class="kicker anim"><span class="tick"></span><span class="num">11</span> · Próximos pasos</div>
+        <h1 class="title anim d1" style="margin-top:16px; font-size:88px;">Activemos Gines,<br>juntos</h1>
+        <p class="lead anim d2" style="margin-top:26px; max-width:680px;">Proponemos una <strong style="color:#fff;">prueba piloto</strong> en el Parque Concejal Dolores Camino, con jornadas gratuitas de presentación para los vecinos.</p>
+        <div class="anim d3" style="margin-top:40px; display:flex; flex-direction:column; gap:16px;">
+          <div class="step"><span class="sn">1</span> Reunión de presentación del proyecto</div>
+          <div class="step"><span class="sn">2</span> Autorización de espacio y horarios</div>
+          <div class="step"><span class="sn">3</span> Jornada inaugural gratuita para vecinos</div>
+        </div>
+      </div>
+      <div class="anim d2" style="flex:0 0 38%; align-self:stretch; margin:120px 0; display:flex; flex-direction:column; justify-content:center; border-left:3px solid var(--steel-2); padding-left:54px;">
+        <div class="cover-wm" style="font-size:84px; color:#fff;">IR<span style="color:var(--accent)">O</span>NTRAINING</div>
+        <p style="color:var(--wht-70); font-size:22px; margin:22px 0 0;">Unidad móvil deportiva</p>
+        <hr class="steel-rule" style="width:160px; margin:28px 0;">
+        <div style="display:flex; flex-direction:column; gap:12px; font-size:21px;">
+          <div class="ct"><svg class="ico" viewBox="0 0 24 24" fill="none" stroke="var(--accent)" stroke-width="1.7"><path d="M4 5h4l2 5-2.5 1.5a11 11 0 005 5L15 14l5 2v4a1 1 0 01-1 1A16 16 0 013 6a1 1 0 011-1z" stroke-linejoin="round"/></svg> <span style="color:var(--wht-50);">651581088</span></div>
+          <div class="ct"><svg class="ico" viewBox="0 0 24 24" fill="none" stroke="var(--accent)" stroke-width="1.7"><circle cx="12" cy="8" r="3.4"/><path d="M5 21a7 7 0 0114 0" stroke-linecap="round"/></svg> <span style="color:var(--wht-50);">Eduardo Roldán Prieto
+</span></div>
+          <div class="ct"><svg class="ico" viewBox="0 0 24 24" fill="none" stroke="var(--accent)" stroke-width="1.7"><circle cx="12" cy="12" r="9"/><path d="M3 12h18M12 3c3 3 3 15 0 18M12 3c-3 3-3 15 0 18" stroke-linecap="round"/></svg> <span style="color:var(--wht-50);">
+</span></div>
+        </div>
+      </div>
+    </div>
+    <div class="foot"><span class="wm">IR<span class="o">O</span>NTRAINING</span><span class="mid"></span><span class="pg">12</span></div>
+  </section>
+
+</deck-stage>
+
+<div id="tweaks-root"></div>
+
+<style>
+  /* component-specific bits */
+  .spec .sl{ font-family:var(--disp); font-weight:700; font-size:19px; letter-spacing:.12em; text-transform:uppercase; color:var(--accent); }
+  .spec .sv{ font-size:25px; font-weight:600; margin-top:3px; line-height:1.1; }
+  .spec{ padding:10px 0; border-bottom:1px solid var(--line-l); }
+  .dfig{ margin:0; border-radius:12px; overflow:hidden; background:#fff; border:1px solid var(--line-l); }
+  .dfig img{ width:100%; height:118px; object-fit:cover; display:block; }
+  .dfig figcaption{ padding:10px 15px; font-size:16px; font-weight:600; color:var(--ink-60); }
+  .obj{ }
+  .obj .on{ font-family:var(--disp); font-weight:900; font-size:76px; line-height:.9; color:var(--accent); transform:skewX(-7deg); }
+  .obj p{ font-size:24px; line-height:1.28; font-weight:500; margin:14px 0 0; padding-top:16px; border-top:2px solid var(--line-d); }
+  .tband{ background:#fff; border:1px solid var(--line-l); border-radius:14px; padding:30px 34px; }
+  .tband .tlbl{ font-family:var(--disp); font-weight:700; font-size:19px; letter-spacing:.16em; color:var(--accent); }
+  .tband .thr{ font-family:var(--disp); font-weight:800; font-size:54px; letter-spacing:.02em; margin-top:6px; }
+  .chk{ position:relative; padding-left:40px; font-size:23px; font-weight:500; }
+  .chk::before{ content:""; position:absolute; left:0; top:2px; width:24px; height:24px; border-radius:6px; background:var(--accent);
+    -webkit-mask:url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'><path fill='none' stroke='black' stroke-width='3' stroke-linecap='round' stroke-linejoin='round' d='M5 12l4 4 10-10'/></svg>") center/16px no-repeat;
+    mask:url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'><path fill='none' stroke='black' stroke-width='3' stroke-linecap='round' stroke-linejoin='round' d='M5 12l4 4 10-10'/></svg>") center/16px no-repeat; }
+  .step{ display:flex; align-items:center; gap:18px; font-size:25px; font-weight:500; }
+  .step .sn{ font-family:var(--disp); font-weight:900; font-size:30px; color:var(--ink); background:var(--accent); width:46px; height:46px; border-radius:10px; display:flex; align-items:center; justify-content:center; flex:none; transform:skewX(-7deg); }
+  .ct{ display:flex; align-items:center; gap:14px; }
+  .ct .ico{ width:22px; height:22px; flex:none; }
+  .ct span{ white-space:nowrap; }
+
+  /* ===================== APP MOCK (slide · reservas) ===================== */
+  .appwrap{ display:flex; gap:56px; align-items:center; height:100%; }
+  .app-copy{ flex:0 0 37%; }
+  .feat{ display:flex; gap:18px; align-items:flex-start; padding:22px 0; border-top:1px solid var(--line-l); }
+  .feat.first{ border-top:0; padding-top:6px; }
+  .feat .fi{ width:50px; height:50px; border-radius:13px; background:var(--ink); color:#fff; display:flex; align-items:center; justify-content:center; flex:none; }
+  .feat .fi .ico{ width:25px; height:25px; }
+  .feat h4{ margin:0; font-size:24px; font-weight:700; letter-spacing:-.01em; }
+  .feat p{ margin:6px 0 0; font-size:19.5px; line-height:1.36; color:var(--ink-60); }
+
+  .phones{ flex:1; display:flex; justify-content:center; align-items:center; position:relative; }
+  .phone{ width:316px; height:648px; border-radius:48px; background:#0a0a0b; padding:13px; flex:none;
+    box-shadow:0 44px 100px -34px rgba(0,0,0,.6), 0 0 0 2px rgba(255,255,255,.07) inset; }
+  .phone .island{ position:absolute; top:26px; left:50%; transform:translateX(-50%); width:108px; height:30px; background:#000; border-radius:16px; z-index:6; }
+  .phone .screen{ width:100%; height:100%; border-radius:35px; overflow:hidden; background:var(--ink); position:relative; }
+  .phone-a{ transform:rotate(-4.5deg) translateY(14px); z-index:1; }
+  .phone-b{ transform:rotate(3.5deg); margin-left:-34px; z-index:2; }
+
+  .scr{ font-family:var(--body); color:#fff; height:100%; display:flex; flex-direction:column; }
+  .scr-pad{ padding-left:19px; padding-right:19px; }
+  .statusbar{ height:52px; display:flex; align-items:flex-end; justify-content:space-between; padding:0 26px 7px; font-size:14px; font-weight:600; flex:none; }
+  .statusbar .sbr{ display:flex; gap:6px; align-items:center; }
+  .statusbar .sbr .ico{ width:16px; height:13px; }
+
+  .app-top{ display:flex; align-items:center; justify-content:space-between; padding-top:4px; }
+  .app-wm{ font-family:var(--disp); font-weight:900; font-size:20px; transform:skewX(-7deg); letter-spacing:-.02em; }
+  .app-loc{ display:flex; align-items:center; gap:5px; font-size:12px; color:var(--wht-50); }
+  .app-loc .ico{ width:13px; height:13px; }
+  .datepills{ display:flex; gap:8px; margin-top:18px; }
+  .dp{ flex:1; background:var(--ink-2); border:1px solid var(--line-d); border-radius:13px; padding:9px 0; text-align:center; }
+  .dp em{ display:block; font-style:normal; font-size:10px; letter-spacing:.06em; color:var(--wht-50); font-weight:600; }
+  .dp b{ display:block; font-size:18px; font-weight:700; margin-top:2px; }
+  .dp.on{ background:var(--accent); border-color:var(--accent); }
+  .dp.on em,.dp.on b{ color:#fff; }
+  .scr-h{ font-family:var(--disp); font-weight:700; font-size:13px; letter-spacing:.13em; text-transform:uppercase; color:var(--wht-50); margin-top:20px; }
+  .classlist{ display:flex; flex-direction:column; gap:10px; margin-top:11px; flex:1; }
+  .cls{ display:flex; align-items:center; gap:12px; background:var(--ink-2); border:1px solid var(--line-d); border-radius:16px; padding:13px 14px; }
+  .cls.sel{ border-color:var(--accent); background:color-mix(in srgb, var(--accent) 12%, var(--ink-2)); }
+  .cls.dim{ opacity:.5; }
+  .cls-t{ font-family:var(--disp); font-weight:800; font-size:18px; color:#fff; min-width:42px; }
+  .cls-b{ flex:1; display:flex; flex-direction:column; gap:3px; min-width:0; }
+  .cls-b b{ font-size:14.5px; font-weight:700; line-height:1.06; }
+  .cls-b small{ font-size:12px; color:var(--wht-50); }
+  .cls-s{ font-size:11px; font-weight:700; padding:5px 9px; border-radius:999px; white-space:nowrap; }
+  .cls-s.ok{ background:color-mix(in srgb, var(--accent) 20%, transparent); color:var(--accent); }
+  .cls-s.low{ background:rgba(255,194,61,.16); color:#FFC23D; }
+  .cls-s.full{ background:rgba(255,255,255,.08); color:var(--wht-50); }
+  .tabbar{ display:flex; justify-content:space-around; align-items:center; padding:13px 0 26px; border-top:1px solid var(--line-d); background:var(--ink-2); flex:none; }
+  .tabbar .tb{ display:flex; flex-direction:column; align-items:center; gap:5px; font-size:10px; color:var(--wht-50); font-weight:600; }
+  .tabbar .tb .ico{ width:21px; height:21px; }
+  .tabbar .tb.on{ color:#fff; }
+
+  /* detail screen */
+  .det{ padding-top:8px; flex:1; }
+  .det-back{ display:flex; align-items:center; gap:5px; font-size:13px; color:var(--wht-50); font-weight:600; }
+  .det-back .ico{ width:16px; height:16px; }
+  .det-name{ font-family:var(--disp); font-weight:800; font-size:32px; line-height:.96; margin-top:18px; letter-spacing:-.01em; }
+  .det-when{ font-size:13.5px; color:var(--accent); font-weight:700; margin-top:9px; }
+  .coach{ display:flex; align-items:center; gap:12px; margin-top:20px; padding:12px 13px; background:var(--ink-2); border:1px solid var(--line-d); border-radius:16px; }
+  .coach .av{ width:44px; height:44px; border-radius:50%; background:var(--accent); color:#fff; display:flex; align-items:center; justify-content:center; font-family:var(--disp); font-weight:800; font-size:17px; flex:none; }
+  .coach b{ font-size:14.5px; }
+  .stars{ font-size:12px; color:#FFC23D; margin-top:4px; display:flex; gap:6px; align-items:center; }
+  .stars span{ color:var(--wht-50); }
+  .det-chips{ display:flex; gap:8px; margin-top:16px; flex-wrap:wrap; }
+  .det-chips span{ font-size:12px; font-weight:600; padding:7px 12px; border-radius:999px; background:var(--ink-2); border:1px solid var(--line-d); color:var(--wht-70); }
+  .det-note{ font-size:12.5px; color:var(--wht-50); line-height:1.42; margin-top:16px; }
+  .det-cta{ padding-bottom:26px; }
+  .bookbtn{ width:100%; border:0; background:var(--accent); color:#fff; font-family:var(--body); font-weight:700; font-size:16.5px; padding:16px; border-radius:16px; cursor:pointer; letter-spacing:.01em; }
+  .cta-sub{ text-align:center; font-size:11px; color:var(--wht-50); margin-top:11px; }
+</style>
+
+<script src="https://unpkg.com/react@18.3.1/umd/react.development.js" integrity="sha384-hD6/rw4ppMLGNu3tX5cjIb+uRZ7UkRJ6BPkLpg4hAu/6onKUg4lLsHAs9EBPT82L" crossorigin="anonymous"></script>
+<script src="https://unpkg.com/react-dom@18.3.1/umd/react-dom.development.js" integrity="sha384-u6aeetuaXnQ38mYT8rp6sbXaQe3NL9t+IBXmnYxwkUI2Hw4bsp2Wvmx4yRQF1uAm" crossorigin="anonymous"></script>
+<script src="https://unpkg.com/@babel/standalone@7.29.0/babel.min.js" integrity="sha384-m08KidiNqLdpJqLq95G/LEi8Qvjl/xUYll3QILypMoQ65QorJ9Lvtp2RXYGBFj1y" crossorigin="anonymous"></script>
+<script type="text/babel" src="tweaks-panel.jsx"></script>
+<script type="text/babel">
+  const TWEAK_DEFAULTS = /*EDITMODE-BEGIN*/{
+    "cover": "split",
+    "accent": "#1F6FFF"
+  }/*EDITMODE-END*/;
+
+  function DeckTweaks(){
+    const [t, setTweak] = useTweaks(TWEAK_DEFAULTS);
+    React.useEffect(()=>{ document.documentElement.setAttribute('data-cover', t.cover); }, [t.cover]);
+    React.useEffect(()=>{ document.documentElement.style.setProperty('--accent', t.accent); }, [t.accent]);
+    return (
+      <TweaksPanel title="Tweaks">
+        <TweakSection label="Portada" />
+        <TweakRadio label="Estilo" value={t.cover}
+          options={[{value:'split',label:'Split'},{value:'hero',label:'Hero'},{value:'mono',label:'Mono'}]}
+          onChange={(v)=>setTweak('cover', v)} />
+        <TweakSection label="Marca" />
+        <TweakColor label="Acento" value={t.accent}
+          options={['#FF4D12','#1F6FFF','#B6FF2E','#FF2D55']}
+          onChange={(v)=>setTweak('accent', v)} />
+      </TweaksPanel>
+    );
+  }
+  ReactDOM.createRoot(document.getElementById('tweaks-root')).render(<DeckTweaks/>);
+</script>
+<script src="deck-stage.js"></script>
+</body>
+</html>
