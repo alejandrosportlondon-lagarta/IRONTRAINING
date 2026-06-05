@@ -556,10 +556,10 @@
 </button>
 
 <style>
+  /* ── Rail toggle ─────────────────────────────────── */
   #rail-toggle {
     position: fixed;
     top: 50%;
-    /* sits right at the rail's right edge — default rail is 188px */
     left: 188px;
     transform: translate(-50%, -50%);
     z-index: 2147483645;
@@ -574,24 +574,50 @@
     box-shadow: 0 2px 10px rgba(0,0,0,.5), inset 0 0 0 .5px rgba(255,255,255,.1);
     transition: background .15s, color .15s, left .2s cubic-bezier(.3,.7,.4,1), transform .15s;
   }
-  #rail-toggle:hover {
-    background: #2c2c30;
-    color: #fff;
-    transform: translate(-50%, -50%) scale(1.08);
-  }
-  #rail-toggle svg {
-    width: 10px; height: 16px; flex: none;
-    transition: rotate .2s cubic-bezier(.3,.7,.4,1);
-  }
-  #rail-toggle.rail-hidden {
-    left: 0;
-    transform: translate(0, -50%);
-    border-radius: 0 6px 6px 0;
-  }
-  #rail-toggle.rail-hidden:hover {
-    transform: translate(0, -50%) scale(1.08);
-  }
+  #rail-toggle:hover { background: #2c2c30; color: #fff; transform: translate(-50%, -50%) scale(1.08); }
+  #rail-toggle svg { width: 10px; height: 16px; flex: none; transition: rotate .2s cubic-bezier(.3,.7,.4,1); }
+  #rail-toggle.rail-hidden { left: 0; transform: translate(0, -50%); border-radius: 0 6px 6px 0; }
+  #rail-toggle.rail-hidden:hover { transform: translate(0, -50%) scale(1.08); }
   #rail-toggle.rail-hidden svg { rotate: 180deg; }
+  @media (max-width: 640px) { #rail-toggle { display: none; } }
+
+  /* ── Portrait hint ───────────────────────────────── */
+  #portrait-hint {
+    display: none;
+    position: fixed; inset: 0; z-index: 2147483647;
+    background: #0B0B0C;
+    flex-direction: column; align-items: center; justify-content: center; gap: 24px;
+    color: #fff; text-align: center; padding: 32px;
+    font-family: ui-sans-serif, system-ui, -apple-system, sans-serif;
+  }
+  #portrait-hint svg { width: 52px; height: 52px; color: rgba(255,255,255,.5); animation: hint-spin 2s ease-in-out infinite; }
+  #portrait-hint p { margin: 0; font-size: 17px; font-weight: 500; line-height: 1.5; color: rgba(255,255,255,.75); max-width: 260px; }
+  #portrait-hint strong { color: #fff; display: block; font-size: 21px; margin-bottom: 6px; }
+  @keyframes hint-spin {
+    0%,100% { transform: rotate(0deg); } 40% { transform: rotate(90deg); } 60% { transform: rotate(90deg); }
+  }
+  @media (max-width: 640px) and (orientation: portrait) { #portrait-hint { display: flex; } }
+
+  /* ── Tweaks panel — mobile ───────────────────────── */
+  @media (max-width: 640px) {
+    #twk-wrap {
+      right: 8px !important;
+      bottom: 8px !important;
+    }
+    #twk-panel {
+      width: calc(100vw - 24px);
+      max-width: 320px;
+    }
+    #twk-toggle {
+      width: 44px; height: 44px;
+      border-radius: 12px;
+    }
+  }
+
+  /* ── Landscape mobile — comfortable nav zone ─────── */
+  @media (max-width: 900px) and (orientation: landscape) {
+    #twk-wrap { bottom: 6px; right: 6px; }
+  }
 </style>
 
 <script>
@@ -639,6 +665,14 @@
   sync();
 })();
 </script>
+
+<div id="portrait-hint" aria-hidden="true">
+  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+    <rect x="5" y="2" width="14" height="20" rx="3"/>
+    <path d="M9 21.5h6M12 7v4M10 9h4"/>
+  </svg>
+  <p><strong>Gira el dispositivo</strong>La presentación se ve mejor en horizontal</p>
+</div>
 
 <div id="tweaks-root"></div>
 
