@@ -459,7 +459,7 @@
         </div>
       </div>
 
-      <div class="phones anim d2">
+      <div class="phones">
         <!-- browse -->
         <div class="phone phone-a">
           <span class="island"></span>
@@ -770,6 +770,73 @@
   .det-cta{ padding-bottom:26px; }
   .bookbtn{ width:100%; border:0; background:var(--accent); color:#fff; font-family:var(--body); font-weight:700; font-size:16.5px; padding:16px; border-radius:16px; cursor:pointer; letter-spacing:.01em; }
   .cta-sub{ text-align:center; font-size:11px; color:var(--wht-50); margin-top:11px; }
+
+  /* ============================================================
+     PHONE MOCK ANIMATIONS
+     Gated on data-deck-active + prefers-reduced-motion:no-preference
+     ============================================================ */
+
+  @media (prefers-reduced-motion:no-preference){
+
+    /* ── 1. Entry: each phone flies in individually ── */
+    @keyframes phone-in-a {
+      from { opacity:0; filter:blur(6px); transform:rotate(-4.5deg) translateY(70px) scale(.94); }
+      to   { opacity:1; filter:blur(0);   transform:rotate(-4.5deg) translateY(14px) scale(1); }
+    }
+    @keyframes phone-in-b {
+      from { opacity:0; filter:blur(6px); transform:rotate(3.5deg) translateY(70px) scale(.94); }
+      to   { opacity:1; filter:blur(0);   transform:rotate(3.5deg)  translateY(0)    scale(1); }
+    }
+
+    /* ── 2. Ambient float (opposite phase, subtle) ── */
+    @keyframes float-a {
+      0%,100% { transform:rotate(-4.5deg) translateY(14px); }
+      50%     { transform:rotate(-4.5deg) translateY(5px); }
+    }
+    @keyframes float-b {
+      0%,100% { transform:rotate(3.5deg) translateY(0); }
+      50%     { transform:rotate(3.5deg) translateY(-10px); }
+    }
+
+    /* ── 3. Booking button breathe ── */
+    @keyframes bookbtn-breathe {
+      0%,55%,100% { transform:scale(1);    box-shadow:0 4px 18px rgba(0,0,0,.28); }
+      75%          { transform:scale(.962); box-shadow:0 2px  8px rgba(0,0,0,.4); }
+    }
+
+    /* ── 4. Selected class row glow ── */
+    @keyframes sel-glow {
+      0%,100% { box-shadow:0 0  0   1px var(--accent); }
+      50%     { box-shadow:0 0 14px 2px color-mix(in srgb, var(--accent) 55%, transparent); }
+    }
+
+    /* ── 5. Active date pill pulse ── */
+    @keyframes dp-on-pulse {
+      0%,60%,100% { opacity:1; }
+      80%          { opacity:.75; }
+    }
+
+    /* Apply when slide is active */
+    section[data-deck-active] .phone-a {
+      animation:
+        phone-in-a 0.68s cubic-bezier(.15,.8,.2,1)  0.06s both,
+        float-a    6.5s ease-in-out                 0.85s infinite;
+    }
+    section[data-deck-active] .phone-b {
+      animation:
+        phone-in-b 0.68s cubic-bezier(.15,.8,.2,1)  0.22s both,
+        float-b    5.8s ease-in-out                 1.15s infinite;
+    }
+    section[data-deck-active] .bookbtn {
+      animation: bookbtn-breathe 3.6s ease-in-out 1.8s infinite;
+    }
+    section[data-deck-active] .cls.sel {
+      animation: sel-glow 3s ease-in-out 1.4s infinite;
+    }
+    section[data-deck-active] .dp.on {
+      animation: dp-on-pulse 3.6s ease-in-out 2.2s infinite;
+    }
+  }
 
 </style>
 
