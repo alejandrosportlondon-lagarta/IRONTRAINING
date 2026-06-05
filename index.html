@@ -552,7 +552,7 @@
 <div id="tweaks-root"></div>
 
 <style>
-style>
+
   /* component-specific bits */
   .spec .sl{ font-family:var(--disp); font-weight:700; font-size:19px; letter-spacing:.12em; text-transform:uppercase; color:var(--accent); }
   .spec .sv{ font-size:25px; font-weight:600; margin-top:3px; line-height:1.1; }
@@ -645,33 +645,32 @@ style>
   .det-cta{ padding-bottom:26px; }
   .bookbtn{ width:100%; border:0; background:var(--accent); color:#fff; font-family:var(--body); font-weight:700; font-size:16.5px; padding:16px; border-radius:16px; cursor:pointer; letter-spacing:.01em; }
   .cta-sub{ text-align:center; font-size:11px; color:var(--wht-50); margin-top:11px; }
-</style>
-</style>
 
+</style>
 
 <script>
 (function(){
-  var DEFAULTS = { cover:'split', accent:'#1F6FFF' };
-  var state = Object.assign({}, DEFAULTS);
-  try{ var s=localStorage.getItem('irontraining-tweaks'); if(s) Object.assign(state,JSON.parse(s)); }catch(e){}
+  var DEFAULTS={cover:'split',accent:'#1F6FFF'};
+  var state=Object.assign({},DEFAULTS);
+  try{var s=localStorage.getItem('irontraining-tweaks');if(s)Object.assign(state,JSON.parse(s));}catch(e){}
 
   function applyState(){
-    document.documentElement.setAttribute('data-cover', state.cover);
-    document.documentElement.style.setProperty('--accent', state.accent);
-    try{ localStorage.setItem('irontraining-tweaks', JSON.stringify(state)); }catch(e){}
-    try{ window.parent.postMessage({type:'__edit_mode_set_keys', edits: Object.assign({},state)},'*'); }catch(e){}
+    document.documentElement.setAttribute('data-cover',state.cover);
+    document.documentElement.style.setProperty('--accent',state.accent);
+    try{localStorage.setItem('irontraining-tweaks',JSON.stringify(state));}catch(e){}
+    try{window.parent.postMessage({type:'__edit_mode_set_keys',edits:Object.assign({},state)},'*');}catch(e){}
     window.dispatchEvent(new CustomEvent('tweakchange',{detail:Object.assign({},state)}));
   }
   applyState();
 
   function isLight(hex){
-    var h=hex.replace('#',''), x=h.length===3?h.replace(/./g,function(c){return c+c;}):h.padEnd(6,'0');
-    var n=parseInt(x.slice(0,6),16); if(isNaN(n))return true;
+    var h=hex.replace('#',''),x=h.length===3?h.replace(/./g,function(c){return c+c;}):h.padEnd(6,'0');
+    var n=parseInt(x.slice(0,6),16);if(isNaN(n))return true;
     var r=(n>>16)&255,g=(n>>8)&255,b=n&255;
     return r*299+g*587+b*114>148000;
   }
 
-  var STYLE = [
+  var STYLE=[
     '#twk-panel{position:fixed;right:16px;bottom:16px;z-index:2147483646;width:280px;',
     'background:rgba(250,249,247,.92);color:#29261b;',
     '-webkit-backdrop-filter:blur(24px) saturate(160%);backdrop-filter:blur(24px) saturate(160%);',
@@ -680,14 +679,14 @@ style>
     'font:11.5px/1.4 ui-sans-serif,system-ui,-apple-system,sans-serif;overflow:hidden;display:none;}',
     '#twk-panel.twk-open{display:block;}',
     '.twk-hd{display:flex;align-items:center;justify-content:space-between;padding:10px 8px 10px 14px;cursor:move;user-select:none;}',
-    '.twk-hd b{font-size:12px;font-weight:600;letter-spacing:.01em;}',
+    '.twk-hd b{font-size:12px;font-weight:600;}',
     '.twk-x{appearance:none;border:0;background:transparent;color:rgba(41,38,27,.55);width:22px;height:22px;border-radius:6px;cursor:default;font-size:13px;}',
     '.twk-x:hover{background:rgba(0,0,0,.06);color:#29261b;}',
     '.twk-body{padding:2px 14px 14px;display:flex;flex-direction:column;gap:10px;}',
     '.twk-sect{font-size:10px;font-weight:600;letter-spacing:.06em;text-transform:uppercase;color:rgba(41,38,27,.45);padding:10px 0 0;}',
     '.twk-sect:first-child{padding-top:0;}',
     '.twk-row{display:flex;flex-direction:column;gap:5px;}',
-    '.twk-lbl{display:flex;justify-content:space-between;color:rgba(41,38,27,.72);font-weight:500;}',
+    '.twk-lbl{font-weight:500;color:rgba(41,38,27,.72);}',
     '.twk-seg{position:relative;display:flex;padding:2px;border-radius:8px;background:rgba(0,0,0,.06);user-select:none;}',
     '.twk-seg-thumb{position:absolute;top:2px;bottom:2px;border-radius:6px;background:rgba(255,255,255,.9);',
     'box-shadow:0 1px 2px rgba(0,0,0,.12);transition:left .15s cubic-bezier(.3,.7,.4,1),width .15s;}',
@@ -695,78 +694,69 @@ style>
     'color:inherit;font:inherit;font-weight:500;min-height:22px;border-radius:6px;cursor:default;padding:4px 6px;}',
     '.twk-chips{display:flex;gap:6px;}',
     '.twk-chip{position:relative;appearance:none;flex:1;height:46px;padding:0;border:0;border-radius:6px;',
-    'overflow:hidden;cursor:default;box-shadow:0 0 0 .5px rgba(0,0,0,.12),0 1px 2px rgba(0,0,0,.06);',
-    'transition:transform .12s,box-shadow .12s;}',
+    'overflow:hidden;cursor:default;box-shadow:0 0 0 .5px rgba(0,0,0,.12),0 1px 2px rgba(0,0,0,.06);transition:transform .12s,box-shadow .12s;}',
     '.twk-chip:hover{transform:translateY(-1px);box-shadow:0 0 0 .5px rgba(0,0,0,.18),0 4px 10px rgba(0,0,0,.12);}',
     '.twk-chip[data-on="1"]{box-shadow:0 0 0 1.5px rgba(0,0,0,.85),0 2px 6px rgba(0,0,0,.15);}',
     '.twk-chip svg{position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);width:14px;height:14px;}'
   ].join('');
 
-  var styleEl = document.createElement('style');
-  styleEl.textContent = STYLE;
+  var styleEl=document.createElement('style');
+  styleEl.textContent=STYLE;
   document.head.appendChild(styleEl);
 
-  var panel = document.createElement('div');
-  panel.id = 'twk-panel';
+  var panel=document.createElement('div');
+  panel.id='twk-panel';
   panel.setAttribute('data-omelette-chrome','');
-  panel.innerHTML = '<div class="twk-hd"><b>Tweaks</b><button class="twk-x" type="button" aria-label="Cerrar">&#x2715;</button></div>'
-    + '<div class="twk-body">'
-    + '<div class="twk-sect">Portada</div>'
-    + '<div class="twk-row"><div class="twk-lbl">Estilo</div>'
-    + '<div class="twk-seg" id="twk-cover"><div class="twk-seg-thumb" id="twk-cover-thumb"></div>'
-    + '<button type="button" data-val="split">Split</button>'
-    + '<button type="button" data-val="hero">Hero</button>'
-    + '<button type="button" data-val="mono">Mono</button>'
-    + '</div></div>'
-    + '<div class="twk-sect">Marca</div>'
-    + '<div class="twk-row"><div class="twk-lbl">Acento</div>'
-    + '<div class="twk-chips" id="twk-accent"></div>'
-    + '</div>'
-    + '</div>';
+  panel.innerHTML=
+    '<div class="twk-hd"><b>Tweaks</b><button class="twk-x" type="button" aria-label="Cerrar">&#x2715;</button></div>'+
+    '<div class="twk-body">'+
+    '<div class="twk-sect">Portada</div>'+
+    '<div class="twk-row"><div class="twk-lbl">Estilo</div>'+
+    '<div class="twk-seg" id="twk-cover"><div class="twk-seg-thumb" id="twk-cover-thumb"></div>'+
+    '<button type="button" data-val="split">Split</button>'+
+    '<button type="button" data-val="hero">Hero</button>'+
+    '<button type="button" data-val="mono">Mono</button>'+
+    '</div></div>'+
+    '<div class="twk-sect">Marca</div>'+
+    '<div class="twk-row"><div class="twk-lbl">Acento</div>'+
+    '<div class="twk-chips" id="twk-accent"></div>'+
+    '</div></div>';
 
-  var root = document.getElementById('tweaks-root');
-  if(root) root.appendChild(panel); else document.body.appendChild(panel);
+  var root=document.getElementById('tweaks-root');
+  if(root)root.appendChild(panel);else document.body.appendChild(panel);
 
-  var ACCENT_OPTS = ['#FF4D12','#1F6FFF','#B6FF2E','#FF2D55'];
-  var accentWrap = document.getElementById('twk-accent');
-  ACCENT_OPTS.forEach(function(c){
-    var btn = document.createElement('button');
-    btn.type='button'; btn.className='twk-chip'; btn.dataset.val=c;
-    btn.style.background=c;
-    accentWrap.appendChild(btn);
+  ['#FF4D12','#1F6FFF','#B6FF2E','#FF2D55'].forEach(function(c){
+    var btn=document.createElement('button');
+    btn.type='button';btn.className='twk-chip';btn.dataset.val=c;btn.style.background=c;
+    document.getElementById('twk-accent').appendChild(btn);
   });
 
   function syncUI(){
-    var coverBtns = document.querySelectorAll('#twk-cover button');
-    var n = coverBtns.length;
-    var idx = 0;
-    coverBtns.forEach(function(b,i){ if(b.dataset.val===state.cover) idx=i; });
-    var thumb = document.getElementById('twk-cover-thumb');
-    thumb.style.left='calc(2px + '+idx+' * (100% - 4px) / '+n+')';
-    thumb.style.width='calc((100% - 4px) / '+n+')';
-
+    var btns=document.querySelectorAll('#twk-cover button'),n=btns.length,idx=0;
+    btns.forEach(function(b,i){if(b.dataset.val===state.cover)idx=i;});
+    var th=document.getElementById('twk-cover-thumb');
+    th.style.left='calc(2px + '+idx+' * (100% - 4px) / '+n+')';
+    th.style.width='calc((100% - 4px) / '+n+')';
     document.querySelectorAll('#twk-accent .twk-chip').forEach(function(chip){
-      var on = chip.dataset.val.toLowerCase()===state.accent.toLowerCase();
-      chip.dataset.on = on?'1':'0';
-      var light = isLight(chip.dataset.val);
-      var check = on ? '<svg viewBox="0 0 14 14"><path d="M3 7.2 5.8 10 11 4.2" fill="none" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" stroke="'+(light?'rgba(0,0,0,.78)':'#fff')+'"/></svg>' : '';
-      chip.innerHTML = check;
+      var on=chip.dataset.val.toLowerCase()===state.accent.toLowerCase();
+      chip.dataset.on=on?'1':'0';
+      var light=isLight(chip.dataset.val);
+      chip.innerHTML=on?'<svg viewBox="0 0 14 14"><path d="M3 7.2 5.8 10 11 4.2" fill="none" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" stroke="'+(light?'rgba(0,0,0,.78)':'#fff')+'"/></svg>':'';
     });
   }
 
   document.getElementById('twk-cover').addEventListener('click',function(e){
-    var btn=e.target.closest('[data-val]'); if(!btn)return;
-    state.cover=btn.dataset.val; applyState(); syncUI();
+    var b=e.target.closest('[data-val]');if(!b)return;
+    state.cover=b.dataset.val;applyState();syncUI();
   });
   document.getElementById('twk-accent').addEventListener('click',function(e){
-    var btn=e.target.closest('[data-val]'); if(!btn)return;
-    state.accent=btn.dataset.val; applyState(); syncUI();
+    var b=e.target.closest('[data-val]');if(!b)return;
+    state.accent=b.dataset.val;applyState();syncUI();
   });
   panel.querySelector('.twk-x').addEventListener('click',function(){
     panel.classList.remove('twk-open');
-    try{ window.parent.postMessage({type:'__edit_mode_dismissed'},'*'); }catch(e){}
+    try{window.parent.postMessage({type:'__edit_mode_dismissed'},'*');}catch(e){}
   });
-
   var drag=null;
   panel.querySelector('.twk-hd').addEventListener('mousedown',function(e){
     if(e.target.classList.contains('twk-x'))return;
@@ -779,14 +769,12 @@ style>
     panel.style.bottom=Math.max(16,drag.sb-(e.clientY-drag.sy))+'px';
   });
   document.addEventListener('mouseup',function(){drag=null;});
-
   window.addEventListener('message',function(e){
-    if(!e.data||!e.data.type)return;
-    if(e.data.type==='__activate_edit_mode') panel.classList.add('twk-open');
-    else if(e.data.type==='__deactivate_edit_mode') panel.classList.remove('twk-open');
+    if(!e||!e.data||!e.data.type)return;
+    if(e.data.type==='__activate_edit_mode')panel.classList.add('twk-open');
+    else if(e.data.type==='__deactivate_edit_mode')panel.classList.remove('twk-open');
   });
-  try{ window.parent.postMessage({type:'__edit_mode_available'},'*'); }catch(e){}
-
+  try{window.parent.postMessage({type:'__edit_mode_available'},'*');}catch(e){}
   syncUI();
 })();
 </script>
