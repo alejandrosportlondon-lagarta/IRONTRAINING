@@ -549,6 +549,78 @@
 
 </deck-stage>
 
+<button id="rail-toggle" title="Mostrar/ocultar panel de diapositivas" aria-label="Mostrar/ocultar panel de diapositivas">
+  <svg id="rail-toggle-icon" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round">
+    <rect x="1" y="1" width="14" height="14" rx="2"/>
+    <line x1="5" y1="1" x2="5" y2="15"/>
+    <path class="arrow" d="M8 6l-2.5 2 2.5 2"/>
+  </svg>
+</button>
+
+<style>
+  #rail-toggle {
+    position: fixed;
+    top: 50%;
+    left: 0;
+    transform: translateY(-50%);
+    z-index: 2147483645;
+    appearance: none; border: none;
+    width: 22px; height: 48px;
+    border-radius: 0 8px 8px 0;
+    background: rgba(30,30,32,.72);
+    color: rgba(255,255,255,.75);
+    cursor: pointer;
+    display: flex; align-items: center; justify-content: center;
+    padding: 0;
+    backdrop-filter: blur(8px);
+    -webkit-backdrop-filter: blur(8px);
+    transition: width .15s ease, background .15s, color .15s, left .2s cubic-bezier(.3,.7,.4,1);
+  }
+  #rail-toggle:hover {
+    width: 28px;
+    background: rgba(30,30,32,.92);
+    color: #fff;
+  }
+  #rail-toggle svg {
+    width: 13px; height: 13px; flex: none;
+    transition: transform .2s cubic-bezier(.3,.7,.4,1);
+  }
+  #rail-toggle.rail-hidden svg { transform: scaleX(-1); }
+  #rail-toggle.rail-hidden { left: 0; }
+</style>
+
+<script>
+(function(){
+  var btn = document.getElementById('rail-toggle');
+  var railVisible = true;
+  try { railVisible = localStorage.getItem('deck-stage.railVisible') !== '0'; } catch(e) {}
+
+  function sync() {
+    btn.classList.toggle('rail-hidden', !railVisible);
+    btn.title = railVisible ? 'Ocultar panel' : 'Mostrar panel';
+  }
+
+  function setRail(on) {
+    railVisible = on;
+    window.postMessage({ type: '__deck_rail_visible', on: on }, '*');
+    try { localStorage.setItem('deck-stage.railVisible', on ? '1' : '0'); } catch(e) {}
+    sync();
+  }
+
+  btn.addEventListener('click', function() { setRail(!railVisible); });
+
+  // Keep button in sync if the rail is toggled by other means (e.g. keyboard R)
+  window.addEventListener('message', function(e) {
+    if (e.data && e.data.type === '__deck_rail_visible' && typeof e.data.on === 'boolean') {
+      railVisible = e.data.on;
+      sync();
+    }
+  });
+
+  sync();
+})();
+</script>
+
 <div id="tweaks-root"></div>
 
 <style>
